@@ -1,0 +1,1 @@
+26-07-2022 14:47:17 - ERROR - 7.4.7 - 57.3 MB/128 MB - adm > cURL error 28: Resolving timed out after 5514 milliseconds (http_request_failed) - 

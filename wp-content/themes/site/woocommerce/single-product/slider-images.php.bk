@@ -1,0 +1,247 @@
+<?php
+
+
+
+$product = wc_get_product();
+
+
+
+$img_main = '';
+
+
+
+$youtube_id = site_getYoutubeIdFromUrl( get_field('youtube_url') );
+
+
+
+$gallery = array();
+
+foreach( $product->get_gallery_image_ids() as $img_id ) {
+
+
+
+  $img = array(
+
+    'type' => 'image',
+
+    'full' => wp_get_attachment_image_url( $img_id, 'full' ),
+
+    'thumbnail' => wp_get_attachment_image_url( $img_id, 'thumbnail' ),
+
+  );
+
+
+
+  $gallery[] = $img;
+
+
+
+  if( $img_main == '' ) {
+
+    $img_main = '<img src="'. $img['full'] .'" class="img-fluid" />';
+
+
+
+    if( $youtube_id !='' ) {
+
+      $gallery[] = array(
+
+        'type' => 'youtube',
+
+        'full' => 'https://www.youtube.com/embed/' . $youtube_id,
+
+        'thumbnail' => 'https://i.ytimg.com/vi/'.$youtube_id.'/hqdefault.jpg',
+
+      );
+
+    }
+
+  }
+
+}
+
+if (count($gallery)==0) {
+  $mainImg = array(
+
+    'type' => 'image',
+
+    'full' => wp_get_attachment_image_url( $product->get_image_id(), 'full' ),
+
+    'thumbnail' => wp_get_attachment_image_url( $product->get_image_id(), 'thumbnail' ),
+
+  );
+  $gallery[] = $mainImg;
+  $img_main = '<img style="max-height: 425px;" src="'. wp_get_attachment_image_src( $product->get_image_id(), 'full' )[0] .'" class="img-fluid" />';
+}
+//var_dump($gallery);
+
+?>
+
+<div class="thumbnail-image" style="display: none;">
+    <?php echo wp_get_attachment_image_src( $product->get_image_id(), 'full' )[0]; ?>
+</div>  
+
+<?php /*if (count($gallery)==0): ?>
+        <div class="thumbnail-image">
+            <img src="<?php echo wp_get_attachment_image_src( $product->get_image_id(), 'full' )[0]; ?>" alt="" />
+        </div>  
+<?php endif; */?>  
+
+<div class="row slider-images">
+
+  <div class="col-12 col-md-2">
+
+    <div class="d-nones d-sm-flex flex-column h-100 slider-thumbnails">
+
+    
+
+        <?php foreach( $gallery as $i => $img ):?>
+
+          <?php if( $i > 3 ):?>
+
+          <a class="d-block position-relative thumbnail" href="#"
+
+            data-type="<?php echo $img['type'];?>"
+
+            data-bg="<?php echo $img['full'];?>"
+
+            data-bs-toggle="modal" data-bs-target="#imagesModal">
+
+             <img src="<?php echo $img['full'];?>" class="img-thumbnail" alt="" /> <!-- thumbnail -->
+
+            <span
+
+              class="d-flex align-items-center bg-dark position-absolute top-0 bottom-0 start-0 end-0 opacity-50 text-light text-center fw-bold fs-4">
+
+              Xem thêm
+
+            </span>
+
+          </a>
+
+          <?php break; else:?>
+
+          <a class="d-flex align-items-center thumbnail image <?php echo ($i==0)?"selected":""; ?>" href="#" 
+
+            data-type="<?php echo $img['type'];?>"
+
+            data-bg="<?php echo $img['full'];?>">
+
+            <img src="<?php echo $img['full'];?>" class="img-thumbnail" alt="" /> <!-- thumbnail -->
+
+          </a>
+
+          <?php endif;?>
+
+        <?php endforeach;?>
+ 
+    </div>
+
+    <div class="d-none d-flex w-100 section-clickable-sm-down overflow-scroll mt-2 d-sm-none"
+
+      data-bs-toggle="modal" data-bs-target="#mbProductImageModal">
+
+      <?php foreach( $gallery as $i => $img ):?>
+
+      <a href="#" class="me-1 img-thumbnail">
+        <!-- h-100  -->
+        <img src="<?php echo $img['full'];?>" class="h-300-px" alt="" />
+
+      </a> 
+
+      <?php endforeach;?>
+
+    </div>
+
+  </div>
+
+  <div class="col-12 col-md-10"> <!-- d-nones d-sm-block -->
+
+    <div class="text-center main-images">
+
+      <!-- <iframe height="360" style="width: 100%;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+
+      <div class="tb-mb">
+        <div class="tb-cell-mb">
+            <a href="#" data-bg="<?php echo wp_get_attachment_image_src( $product->get_image_id(), 'full' )[0]; ?>" data-bs-toggle="modal" data-bs-target="#imagesModal">
+              <?php echo $img_main;?>    
+            </a>  
+        </div>
+      </div>
+      
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Modal -->
+
+<div class="modal fade modal-images" id="imagesModal" tabindex="-1" aria-labelledby="imagesModalLabel"
+
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-xl h-100" style="max-width: 800px;">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <div class="product-title">
+            <strong><?php the_title();?></strong>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <div class="row">
+
+          <div class="col-8 pt-2">
+
+            <div class="m-auto main-images">
+
+              <iframe height="360" style="width: 100%;" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+              <?php echo $img_main;?>
+
+            </div>
+
+          </div>
+
+          <div class="col-4 pt-2">
+
+
+            <div class="d-flex flex-wrap slider-thumbnails">
+
+              <?php foreach( $gallery as $i => $img ):?>
+
+              <a class="d-block thumbnail m-2" href="#"
+
+                data-type="<?php echo $img['type'];?>"
+
+                data-bg="<?php echo $img['full'];?>">
+
+                <img src="<?php echo $img['thumbnail'];?>"
+
+                  class="img-thumbnail" alt="" />
+
+              </a>
+
+              <?php endforeach;?>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,2 @@
+07-01-2023 13:08:36 - ERROR - 7.5.4 - 83,1 MB/256 MB - [cron] > cURL error 28: Operation timed out after 5000 milliseconds with 18566 out of 26060 bytes received (http_request_failed) - 
+23-01-2023 13:17:54 - ERROR - 7.5.4 - 83,1 MB/256 MB - [cron] > cURL error 28: Operation timed out after 5001 milliseconds with 17118 out of 26060 bytes received (http_request_failed) - 

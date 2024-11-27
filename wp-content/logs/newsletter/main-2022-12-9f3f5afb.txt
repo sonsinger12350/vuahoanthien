@@ -1,0 +1,1 @@
+31-12-2022 13:09:15 - ERROR - 7.5.8 - 82,7 MB/512 MB - [cron] > cURL error 28: Resolving timed out after 5514 milliseconds (http_request_failed) - 

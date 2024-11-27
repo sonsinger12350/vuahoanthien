@@ -1,0 +1,147 @@
+<?php
+/**
+ * Template Name: Tracking
+ *
+ * Description: Twenty Twelve loves the no-sidebar look as much as
+ * you do. Use this page template to remove the sidebar from any page.
+ *
+ * Tip: to remove the sidebar from all posts and pages simply remove
+ * any active widgets from the Main Sidebar area, and the sidebar will
+ * disappear everywhere.
+ *
+ * @package WordPress
+ * @subpackage Twenty_Twelve
+ * @since Twenty Twelve 1.0
+ */
+
+get_header();
+
+$order_id = site__get('order_id', '');
+$order = false;
+$status_name = '';
+
+$statuses = array(
+  'processing' => '',
+  'shipping' => '',
+  'completed' => '',
+);
+
+if( $order_id!='' ) {
+  $order = wc_get_order( str_replace('#', '', $order_id) );
+
+  if( $order instanceOf WC_Order && $order->get_id()>0 ) {
+    $my_statuses = array(
+      'wc-pending',
+      'wc-processing',
+      'wc-shipping',
+      'wc-completed',
+      'wc-cancelled',
+    );
+    
+    foreach( wc_get_order_statuses() as $_key => $name ) {
+      if( !in_array($_key, $my_statuses) ) continue;
+        
+       $key = str_replace('wc-','',$_key);
+
+      if( $key == 'shipping' ) {
+        $name = 'Đang vận chuyển';
+      } elseif ( $key == 'pending' ) {
+        $name = 'Đang xử lý';
+        $key = 'processing';
+        $_key = 'wc-' . $key;
+      }
+    
+      if( isset($statuses[ $key ]) ) {
+        $statuses[ $key ] = $name;
+      }
+
+      $status_name = $name;
+    }
+  } else {
+    $order = false;
+  }
+  //  var_dump($status_name);
+}
+
+?>
+<div class="bg-grey-lightest">
+  <div class="container">
+    <div class="tracking-order-item pb-4 pt-4">
+      <h2 class="mb-4 border-0 mg-top-0 section-header"><span><?php the_title();?></span></h2>
+      <p><i>* Nhập mã đơn hàng để kiểm tra trạng thái đơn hàng</i></p>
+      <form method="get" action="<?php the_permalink();?>">
+        <div class="input-group search-box mb-3">
+          <input type="text" class="form-control search-input"
+            placeholder="Nhập mã đơn hàng" aria-label="Search"
+            aria-describedby="button-addon2" name="order_id" value="<?php echo $order_id;?>" required>
+          <button class="btn btn-search" type="submit"><i class="bi bi-search"></i></button>
+        </div>
+      </form>
+      <?php if( $order ):  
+        $data = $order->get_data(); 
+        
+        //var_dump($data);
+        $list_status = array();
+        // if( isset($statuses[$key]) ) {
+        if( isset($statuses[$data['status']]) ) {
+          foreach( $statuses as $s_key => $name ) {
+            // $list_status[] = '<span'.( $s_key == $key ? ' class="text-warning"' : '' ) . '>' . $name .'</span>';
+            $list_status[] = '<span'.( $s_key == $data['status'] ? ' class="text-warning"' : '' ) . '>' . $name .'</span>';
+          }
+        } else {
+          $list_status[] = '<span class="text-warning">' . $status_name .'</span>';
+        }
+        //var_dump( $list_status);
+      ?>
+      <div class="tab-content" id="trackOrderContent">
+        <div class="tab-pane fade show active" id="all-orders" role="tabpanel" aria-labelledby="all-orders-tab">
+          <div class="card card-body order" data-status="<?php echo $order->get_status();?>">
+            <div class="row order-status border-bottom pb-3">
+              <div class="col-md-10">
+                Đơn hàng: <strong>#<?php echo $data['id'];?></strong> 
+                | Thời gian đặt hàng: <strong><?php echo $data['date_created']->date('d/m/Y');?></strong>
+                <br>
+                Trạng thái: <?php echo implode(' <i class="bi bi-arrow-right-short"></i> ', $list_status);?>
+              </div>
+            </div>
+            <div class="order-content">
+              <?php
+              foreach( $order->get_items() as $item_id => $item ): 
+                // order item data as an array
+                $product = $item->get_product();
+                if( $product == false ) {
+                  continue;
+                }
+
+                $item_data = $item->get_data();
+                $img = wp_get_attachment_image_url( $product->get_image_id() );
+              ?>
+              <div class="order-item pb-3 border-bottom">
+                <div class="order-item-image border-1">
+                  <?php if( $img ): ?>
+                  <img src="<?php echo $img;?>" class="img-thumbnail" />
+                  <?php endif;?>
+                  <div class="order-item-quantity">X<?php echo $item_data['quantity'];?></div>
+                </div>
+                <div class="order-item-detail">
+                  <p><?php echo $product->get_title();?></p>            
+                </div>
+                <div class="order-item-price text-end">
+                  <b><?php echo site_wc_price($product->get_price());?> <sup class="fs-12">đ</sup></b><br>
+                </div>
+              </div>
+              <?php endforeach;?>
+            </div>
+            <div class="order-footer pt-3 text-end">
+              <h5><span class="text-grey">Tổng tiền:</span> <?php echo site_wc_price($data['total']);?> <sup class="fs-12">đ</sup></h5>      
+            </div>
+          </div>
+        </div>
+      </div>
+      <?php endif; ?>
+    </div>
+  </div>
+</div>
+<?php
+
+get_footer();

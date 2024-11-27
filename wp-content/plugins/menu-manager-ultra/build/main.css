@@ -1,0 +1,835 @@
+/*!**************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/rc-tooltip/assets/bootstrap.css ***!
+  \**************************************************************************************************************************************************************************************************/
+.rc-tooltip.rc-tooltip-zoom-appear,
+.rc-tooltip.rc-tooltip-zoom-enter {
+  opacity: 0;
+}
+.rc-tooltip.rc-tooltip-zoom-enter,
+.rc-tooltip.rc-tooltip-zoom-leave {
+  display: block;
+}
+.rc-tooltip-zoom-enter,
+.rc-tooltip-zoom-appear {
+  opacity: 0;
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+  animation-play-state: paused;
+}
+.rc-tooltip-zoom-leave {
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.6, -0.3, 0.74, 0.05);
+  animation-play-state: paused;
+}
+.rc-tooltip-zoom-enter.rc-tooltip-zoom-enter-active,
+.rc-tooltip-zoom-appear.rc-tooltip-zoom-appear-active {
+  animation-name: rcToolTipZoomIn;
+  animation-play-state: running;
+}
+.rc-tooltip-zoom-leave.rc-tooltip-zoom-leave-active {
+  animation-name: rcToolTipZoomOut;
+  animation-play-state: running;
+}
+@keyframes rcToolTipZoomIn {
+  0% {
+    opacity: 0;
+    transform-origin: 50% 50%;
+    transform: scale(0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform-origin: 50% 50%;
+    transform: scale(1, 1);
+  }
+}
+@keyframes rcToolTipZoomOut {
+  0% {
+    opacity: 1;
+    transform-origin: 50% 50%;
+    transform: scale(1, 1);
+  }
+  100% {
+    opacity: 0;
+    transform-origin: 50% 50%;
+    transform: scale(0, 0);
+  }
+}
+.rc-tooltip {
+  position: absolute;
+  z-index: 1070;
+  display: block;
+  visibility: visible;
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+.rc-tooltip-hidden {
+  display: none;
+}
+.rc-tooltip-placement-top,
+.rc-tooltip-placement-topLeft,
+.rc-tooltip-placement-topRight {
+  padding: 5px 0 9px 0;
+}
+.rc-tooltip-placement-right,
+.rc-tooltip-placement-rightTop,
+.rc-tooltip-placement-rightBottom {
+  padding: 0 5px 0 9px;
+}
+.rc-tooltip-placement-bottom,
+.rc-tooltip-placement-bottomLeft,
+.rc-tooltip-placement-bottomRight {
+  padding: 9px 0 5px 0;
+}
+.rc-tooltip-placement-left,
+.rc-tooltip-placement-leftTop,
+.rc-tooltip-placement-leftBottom {
+  padding: 0 9px 0 5px;
+}
+.rc-tooltip-inner {
+  padding: 8px 10px;
+  color: #fff;
+  text-align: left;
+  text-decoration: none;
+  background-color: #373737;
+  border-radius: 6px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.17);
+  min-height: 34px;
+}
+.rc-tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+.rc-tooltip-placement-top .rc-tooltip-arrow,
+.rc-tooltip-placement-topLeft .rc-tooltip-arrow,
+.rc-tooltip-placement-topRight .rc-tooltip-arrow {
+  bottom: 4px;
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-top-color: #373737;
+}
+.rc-tooltip-placement-top .rc-tooltip-arrow {
+  left: 50%;
+}
+.rc-tooltip-placement-topLeft .rc-tooltip-arrow {
+  left: 15%;
+}
+.rc-tooltip-placement-topRight .rc-tooltip-arrow {
+  right: 15%;
+}
+.rc-tooltip-placement-right .rc-tooltip-arrow,
+.rc-tooltip-placement-rightTop .rc-tooltip-arrow,
+.rc-tooltip-placement-rightBottom .rc-tooltip-arrow {
+  left: 4px;
+  margin-top: -5px;
+  border-width: 5px 5px 5px 0;
+  border-right-color: #373737;
+}
+.rc-tooltip-placement-right .rc-tooltip-arrow {
+  top: 50%;
+}
+.rc-tooltip-placement-rightTop .rc-tooltip-arrow {
+  top: 15%;
+  margin-top: 0;
+}
+.rc-tooltip-placement-rightBottom .rc-tooltip-arrow {
+  bottom: 15%;
+}
+.rc-tooltip-placement-left .rc-tooltip-arrow,
+.rc-tooltip-placement-leftTop .rc-tooltip-arrow,
+.rc-tooltip-placement-leftBottom .rc-tooltip-arrow {
+  right: 4px;
+  margin-top: -5px;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #373737;
+}
+.rc-tooltip-placement-left .rc-tooltip-arrow {
+  top: 50%;
+}
+.rc-tooltip-placement-leftTop .rc-tooltip-arrow {
+  top: 15%;
+  margin-top: 0;
+}
+.rc-tooltip-placement-leftBottom .rc-tooltip-arrow {
+  bottom: 15%;
+}
+.rc-tooltip-placement-bottom .rc-tooltip-arrow,
+.rc-tooltip-placement-bottomLeft .rc-tooltip-arrow,
+.rc-tooltip-placement-bottomRight .rc-tooltip-arrow {
+  top: 4px;
+  margin-left: -5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: #373737;
+}
+.rc-tooltip-placement-bottom .rc-tooltip-arrow {
+  left: 50%;
+}
+.rc-tooltip-placement-bottomLeft .rc-tooltip-arrow {
+  left: 15%;
+}
+.rc-tooltip-placement-bottomRight .rc-tooltip-arrow {
+  right: 15%;
+}
+
+/*!**************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/react-tabs/style/react-tabs.css ***!
+  \**************************************************************************************************************************************************************************************************/
+.react-tabs {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.react-tabs__tab-list {
+  border-bottom: 1px solid #aaa;
+  margin: 0 0 10px;
+  padding: 0;
+}
+
+.react-tabs__tab {
+  display: inline-block;
+  border: 1px solid transparent;
+  border-bottom: none;
+  bottom: -1px;
+  position: relative;
+  list-style: none;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.react-tabs__tab--selected {
+  background: #fff;
+  border-color: #aaa;
+  color: black;
+  border-radius: 5px 5px 0 0;
+}
+
+.react-tabs__tab--disabled {
+  color: GrayText;
+  cursor: default;
+}
+
+.react-tabs__tab:focus {
+  outline: none;
+}
+
+.react-tabs__tab:focus:after {
+  content: '';
+  position: absolute;
+  height: 5px;
+  left: -4px;
+  right: -4px;
+  bottom: -5px;
+  background: #fff;
+}
+
+.react-tabs__tab-panel {
+  display: none;
+}
+
+.react-tabs__tab-panel--selected {
+  display: block;
+}
+
+/*!********************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./src/style/main.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************/
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+body.appearance_page_menu-manager-ultra * {
+  box-sizing: border-box;
+}
+body.appearance_page_menu-manager-ultra .rc-tooltip-content {
+  font-size: 1rem;
+}
+body.appearance_page_menu-manager-ultra .rc-tooltip-content a, body.appearance_page_menu-manager-ultra .rc-tooltip-content a:visited {
+  color: white;
+  text-decoration: none;
+}
+body.appearance_page_menu-manager-ultra .rc-tooltip-content a:hover {
+  text-decoration: underline;
+}
+body.appearance_page_menu-manager-ultra .rc-tooltip-content .mmu-menu-item-tooltop-options {
+  margin-left: auto;
+  margin-right: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
+  justify-items: center;
+  align-items: center;
+}
+
+.mmu-boxed-container, .mmu-toolbar, .mmu-save-bar {
+  background-color: #fff;
+  border: 1px solid #dcdcde;
+  padding: 15px;
+}
+
+.mmu-dashboard {
+  margin-right: 20px;
+  padding: 10px;
+  padding-bottom: 80px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05), 0 3px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  max-width: 1100px;
+  background-color: #f6f6f6;
+}
+.mmu-dashboard button.dashicons {
+  border: 0;
+  background-color: transparent;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+}
+.mmu-dashboard .react-tabs__tab-panel {
+  max-width: 100%;
+}
+.mmu-dashboard .react-tabs__tab {
+  padding: 10px;
+  display: block;
+  border: 0;
+  min-width: 100px;
+  font-size: 1rem;
+  background-color: #2271b1;
+  border: 1px solid #2271b1;
+  border-radius: 4px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 0;
+  border-width: 0;
+  background-color: #59a3df;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-right: 5px;
+  margin-bottom: 0;
+  text-align: center;
+  color: #fff;
+  bottom: -3px;
+}
+.mmu-dashboard .react-tabs__tab--selected {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: #2271b1;
+  color: #fff;
+  border-width: 0px;
+}
+.mmu-dashboard .react-tabs__tab-list {
+  background-color: #fff;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-bottom: 3px solid #2271b1;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+.mmu-save-bar {
+  height: 80px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  transform: translateY(100%);
+  transition: transform 0.2s ease-in-out;
+}
+.mmu-save-bar--active {
+  transform: translateY(0);
+}
+.mmu-save-bar-message {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  font-size: 1rem;
+  margin-right: 30px;
+}
+.mmu-toolbar {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.mmu-toolbar .mmu-option-container {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  align-items: center;
+  -moz-column-gap: 20px;
+       column-gap: 20px;
+}
+.mmu-toolbar .mmu-actions-container {
+  justify-self: flex-end;
+  margin-left: auto;
+}
+.mmu-toolbar .mmu-actions-container .mmu-button {
+  padding: 0;
+  min-width: 0;
+  width: -moz-max-content;
+  width: max-content;
+  display: grid;
+  -moz-column-gap: 5px;
+       column-gap: 5px;
+  grid-template-columns: 20px 1fr;
+  align-items: center;
+  justify-items: start;
+  border: 0;
+  color: #2271b1;
+  background-color: transparent;
+}
+.mmu-settings-bar {
+  padding: 10px;
+  display: grid;
+  grid-template-columns: auto;
+  justify-items: end;
+}
+.mmu-menu-item-container {
+  background-color: #fff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05), 0 3px 6px rgba(0, 0, 0, 0.1);
+  padding-right: 10px;
+}
+.mmu-menu-item-container:hover {
+  outline: 1px solid #2271b1;
+}
+.mmu-menu-item-container--hidden {
+  display: none;
+}
+.mmu-menu-item-container-spacer {
+  height: 15px;
+}
+.mmu-menu-item-container--is-being-dragged {
+  outline: 0 !important;
+}
+.mmu-menu-item-container--is-being-dragged:hover {
+  outline: 0 !important;
+}
+.mmu-menu-item-container--drag-hover .mmu-droppable-container--nested {
+  height: 60px;
+}
+.mmu-menu-item-container .mmu-icon-button--expand-item,
+.mmu-menu-item-container .mmu-icon-button--item-loading {
+  margin-right: 10px;
+  font-size: 2rem;
+}
+.mmu-menu-item-container .mmu-icon-button--item-loading {
+  font-size: 1.5rem;
+}
+.mmu-droppable-container {
+  padding: 0;
+  height: 15px;
+}
+.mmu-droppable-container--nested {
+  height: 10px;
+  padding-bottom: 10px;
+}
+.mmu-droppable-container--active {
+  height: 60px;
+  border-width: 2px;
+  border-style: dashed;
+  border-color: #ccc;
+}
+.mmu-droppable-container--after {
+  height: 15px;
+  padding-left: 0;
+  padding-right: 0;
+}
+.mmu-droppable-container--after .mmu-droppable-inner {
+  height: 100%;
+}
+.mmu-droppable-container--after--active {
+  border-width: 0;
+  height: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.mmu-droppable-container--after--active .mmu-droppable-inner {
+  height: 60px;
+  border: 2px dashed #ccc;
+}
+.mmu-menu-item-row {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  width: 100%;
+}
+.mmu-menu-item-row--details {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.mmu-menu-item-row--drop-target {
+  display: block;
+  padding-bottom: 20px;
+}
+.mmu-menu-item-row--drop-target--active {
+  padding-bottom: 10px;
+}
+.mmu-menu-item-container--without-children .mmu-menu-item-rows {
+  padding-left: 40px;
+}
+.mmu-menu-item-title {
+  font-size: 1rem;
+  line-height: 1.2;
+  font-weight: normal;
+}
+.mmu-menu-item-title--delete {
+  text-decoration: line-through;
+}
+.mmu-menu-item-stage {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.mmu-menu-item-rows {
+  padding-left: 10px;
+  width: 100%;
+}
+.mmu-menu-item-meta {
+  margin-bottom: 5px;
+}
+.mmu-menu-item-url {
+  display: inline-block;
+  color: #666;
+}
+.mmu-menu-item-drag-handle {
+  margin-left: 9px;
+  display: flex;
+  justify-content: center;
+}
+.mmu-menu-item-drag-handle .mmu-gripper {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%273%27 height=%273%27%3E%3Crect x=%270%27 y=%270%27 width=%272%27 height=%272%27 fill=%27%23999%27%3E%3C/rect%3E%3Crect x=%272%27 y=%270%27 width=%271%27 height=%272%27 fill=%27transparent%27%3E%3C/rect%3E%3Crect x=%270%27 y=%272%27 width=%273%27 height=%271%27 fill=%27transparent%27%3E%3C/rect%3E%3C/svg%3E");
+  background-position: top left;
+  width: 11px;
+  height: 30px;
+  cursor: grab;
+}
+.mmu-menu-item-actions {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  -moz-column-gap: 15px;
+       column-gap: 15px;
+  margin-left: auto;
+  justify-self: end;
+  margin-right: 15px;
+}
+.mmu-menu-item-actions .mmu-button {
+  padding: 0;
+  min-width: 0;
+  width: -moz-max-content;
+  width: max-content;
+  display: grid;
+  -moz-column-gap: 5px;
+       column-gap: 5px;
+  grid-template-columns: 20px 1fr;
+  align-items: center;
+  justify-items: start;
+  border: 0;
+  color: #2271b1;
+  background-color: transparent;
+  color: #59a3df;
+}
+.mmu-menu-item-actions .mmu-button:hover {
+  color: #2271b1;
+}
+.mmu-menu-item-actions .mmu-button--disabled {
+  color: #CCC;
+  cursor: default;
+}
+
+.mmu-modal-message {
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+.mmu-modal-actions {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.mmu-modal-actions .mmu-button {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.mmu-button {
+  padding: 10px;
+  display: block;
+  border: 0;
+  min-width: 100px;
+  font-size: 1rem;
+  background-color: #2271b1;
+  border: 1px solid #2271b1;
+  border-radius: 4px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+}
+.mmu-button--save {
+  background-color: #28a745;
+  border: none;
+}
+.mmu-button--without-border {
+  padding: 0;
+  min-width: 0;
+  width: -moz-max-content;
+  width: max-content;
+  display: grid;
+  -moz-column-gap: 5px;
+       column-gap: 5px;
+  grid-template-columns: 20px 1fr;
+  align-items: center;
+  justify-items: start;
+  border: 0;
+  color: #2271b1;
+  background-color: transparent;
+}
+.mmu-button--without-background {
+  background-color: transparent;
+  color: #2271b1;
+}
+
+.mmu-button--secondary {
+  padding: 10px;
+  display: block;
+  border: 0;
+  min-width: 100px;
+  font-size: 1rem;
+  background-color: #2271b1;
+  border: 1px solid #2271b1;
+  border-radius: 4px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  background-color: transparent;
+  color: #2271b1;
+  width: -moz-max-content;
+  width: max-content;
+}
+.mmu-button--secondary:hover {
+  color: #fff;
+  background-color: #2271b1;
+}
+
+.mmu-icon-button--item-loading {
+  animation-name: spin;
+  animation-duration: 2500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.mmu-editor-form-fields {
+  display: grid;
+  align-content: start;
+  row-gap: 10px;
+}
+.mmu-editor-form details {
+  padding: 10px;
+  border: 1px solid #CCC;
+}
+.mmu-editor-form details summary {
+  cursor: pointer;
+}
+.mmu-editor-form details .mmu-editor-form-fields {
+  margin-top: 10px;
+}
+.mmu-editor-field {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  align-items: center;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
+  max-width: calc(100% - 10px);
+}
+.mmu-editor-field input[type=text] {
+  width: 100%;
+  max-width: 100%;
+}
+
+.mmu-menu-item-editor {
+  margin-top: 5px;
+  width: 100%;
+}
+.mmu-menu-item-editor-section {
+  padding: 10px;
+  border-color: #CCC;
+  border-radius: 2px;
+  border-color: #CCC;
+  border-width: 1px;
+  border-style: solid;
+}
+@media screen and (max-width: 900px) {
+  .mmu-menu-item-editor-section {
+    margin-bottom: 10px;
+  }
+}
+.mmu-menu-item-editor-section-header {
+  margin-bottom: 10px;
+}
+.mmu-menu-item-editor-section-header--without-description {
+  margin-bottom: 20px;
+}
+.mmu-menu-item-editor-section-heading {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+.mmu-menu-item-editor-actions a {
+  cursor: pointer;
+}
+.mmu-menu-item-editor-actions--secondary {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.mmu-menu-item-editor-actions--secondary .mmu-button {
+  font-size: 0.8rem;
+  padding: 5px;
+}
+
+.mmu-menu-item-editor-mode--content {
+  display: grid;
+  grid-template-columns: 39% 59%;
+  -moz-column-gap: 2%;
+       column-gap: 2%;
+}
+@media screen and (max-width: 900px) {
+  .mmu-menu-item-editor-mode--content {
+    display: block;
+    grid-template-columns: unset;
+    -moz-column-gap: 0;
+         column-gap: 0;
+  }
+}
+
+.mmu-menu-item-post-search-container .notice {
+  margin-left: 0;
+}
+.mmu-menu-item-post-search-interface .mmu-button--search {
+  padding: 10px;
+}
+.mmu-menu-item-post-search-type-container {
+  margin-bottom: 10px;
+}
+.mmu-menu-item-post-search-keyword-container {
+  display: grid;
+  -moz-column-gap: 2%;
+       column-gap: 2%;
+  grid-template-columns: 74% 24%;
+  align-items: center;
+}
+.mmu-menu-item-post-search-keyword-container .mmu-button {
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 100%;
+}
+.mmu-menu-item-post-search .mmu-menu-item-post-search-results-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+.mmu-menu-item-post-search .mmu-post-results-field-value--url {
+  margin-top: 5px;
+  font-size: 0.7rem;
+}
+.mmu-menu-item-post-search table {
+  border: 1px solid #eee;
+  border-collapse: collapse;
+  width: 100%;
+}
+.mmu-menu-item-post-search table th {
+  background-color: #2271b1;
+  color: white;
+}
+.mmu-menu-item-post-search table th, .mmu-menu-item-post-search table td {
+  padding: 10px;
+  border: 1px solid #eee;
+  word-break: break-all;
+}
+.mmu-menu-item-post-search table td {
+  cursor: pointer;
+}
+.mmu-menu-item-post-search table td:hover {
+  text-decoration: underline;
+}
+.mmu-menu-item-post-search table th {
+  text-align: left;
+}
+.mmu-menu-item-post-search table .mmu-table-col--ID {
+  word-break: keep-all;
+}
+.mmu-menu-item-post-search .mmu-menu-item-editor-help-text {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.mmu-pager {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10px, max-content));
+  justify-items: normal;
+  align-items: center;
+  justify-items: center;
+  max-width: 100%;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
+  text-align: center;
+  justify-content: space-evenly;
+}
+.mmu-pager li a {
+  cursor: pointer;
+  display: block;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid #2271b1;
+}
+.mmu-pager li.selected, .mmu-pager li.selected a {
+  background-color: #2271b1;
+  color: white;
+}
+.mmu-pager a:hover {
+  text-decoration: underline;
+}
+.mmu-pager-action--disabled {
+  display: none;
+}
+
+.mmu-settings-section {
+  margin-bottom: 10px;
+}
+.mmu-settings-section-heading {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.mmu-settings-section-description {
+  margin-bottom: 10px;
+}
+.mmu-settings-form {
+  margin-bottom: 5px;
+}
+.mmu-settings-form-checkbox-group {
+  -moz-columns: 2 auto;
+       columns: 2 auto;
+}
+
+#modal_menu_item_delete_confirm .notice-pro-upgrade {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 20px;
+}
+
+/*# sourceMappingURL=main.css.map*/

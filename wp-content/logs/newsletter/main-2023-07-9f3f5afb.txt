@@ -1,0 +1,2 @@
+02-07-2023 07:50:49 - ERROR - 7.6.9 - 90.1 MB/786 MB - adm > cURL error 28: Operation timed out after 5000 milliseconds with 27254 out of 28195 bytes received (http_request_failed) - 
+05-07-2023 07:51:56 - ERROR - 7.6.9 - 100,5 MB/786 MB - adm > cURL error 28: Operation timed out after 5009 milliseconds with 1190 out of 28195 bytes received (http_request_failed) - 

@@ -1,0 +1,23 @@
+/*.menu-wrapper,
+.container {
+    max-width: 1200px;
+}
+nav .highlight {
+    padding: 15px 0;
+    font-size: 1.1em;
+    font-weight: bold;
+} 
+.category-special-item .title {
+    font-size: 1.2rem; 
+}
+.product-who-viewed .card {
+    background: #fff;
+} 
+.footer-nav ul.nav .fw-bold {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.special-buy-header-text .special-buy-header-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+}*/

@@ -1,0 +1,28 @@
+/*
+#wp-content-editor-tools,
+#ed_toolbar ,
+#side-sortables,
+#adminmenuwrap {
+	position: relative !important;
+	top: 0 !important;
+	bottom: auto !important;
+}
+.plugins .plugin-update-tr,
+.update-nag,
+#adminmenu .awaiting-mod, 
+#adminmenu .update-plugins, 
+#wp-admin-bar-updates {
+	display: none !important;
+}
+*/
+
+#menu-to-edit .menu-item-settings .field-title-attribute,
+#menu-to-edit .menu-item-settings .acf-fields,
+#menu-to-edit .menu-item-settings .field-description{
+	display: none;
+}
+
+#menu-to-edit > li > ul > li > ul > li > .menu-item-settings .acf-fields,
+#menu-to-edit > li > ul > li > ul > li > .menu-item-settings .field-description{
+	display: block;
+}

@@ -1,0 +1,90 @@
+/* MOBILE  */
+@media (min-width: 576px) { 
+    .modal-dialog { max-width: 500px; margin: 6rem auto 0 auto; }
+    #writeReview .modal-dialog { max-width: 700px; margin: 1rem auto 0 auto; }
+    #modal-deal .modal-dialog { max-width: 400px; }
+}
+@media (max-width: 768px) { 
+    .flex-nowrap {
+        flex-wrap: wrap !important;
+    }
+    .tracking-order-menu {
+        position: relative;
+        text-align: center;
+        display: block;
+        margin: 20px auto;
+    }
+    .search-input::placeholder { 
+        color: transparent; 
+        opacity: 0; 
+    }
+    .section-header {
+        margin-bottom: 20px;
+    }
+    .slick-arrow {
+        padding: 20px 3px;
+    }
+    .slick-prev, .slick-next {
+        top: 35%;
+    }
+    .card {
+        padding: 7px;
+    }
+    .special-buy-header {
+        margin-bottom: 1rem;
+    }
+    .col-product-item {
+        width: 50% !important;
+        flex: 0 0 50%;
+    }
+    #specialBuy .col-product-item {
+        width: 99% !important;
+        flex: unset;
+    }
+    .special-buy-item-wrapper .slick-list {
+        padding: 0 !important;
+        margin: 0;
+    }
+    .category-special-item {
+        margin-bottom: 1rem;
+    }
+    .category-special-item .title {
+        font-size: 1.1rem;
+    }
+    .card-blog {
+        padding: 0;
+    }
+    .card-blog .card-body {
+        padding: 0.5rem;
+        font-size: 3.1vw;
+    }
+    .category-list-item img {
+        margin-right: 0.7rem;
+    }
+    .product-price small, .product-price .small {
+        font-size: 0.775rem;
+    }
+    .product-price p {
+        font-size: 1rem;
+    }
+    #searchTrends a {
+        font-size: 0.9em;
+    }
+    .explore-more-search-trend, .explore-more {
+        padding-bottom: 0 !important;
+    }
+    .footer-brands .brands-wrapper {
+        gap: 0;
+    }
+    .footer-brands a {
+        width: 21%;
+        margin: 5px;
+    }
+    .brand-highlight a.card {
+        padding: 0;    
+    }
+    #list-products .col-product-item {
+        width: 50% !important;
+        flex: 0 0 50%;
+    }
+}    
