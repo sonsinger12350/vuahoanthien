@@ -299,25 +299,21 @@
 		else {
 			if (isset($_GET['s'])) {
 				$keyword = $_GET['s'];
-				$sql = "SELECT GROUP_CONCAT(DISTINCT vhd_posts.ID)
-					FROM vhd_posts
-					LEFT JOIN vhd_postmeta ON (vhd_posts.ID = vhd_postmeta.post_id)
-					INNER JOIN vhd_term_relationships ON (vhd_posts.ID = vhd_term_relationships.object_id )
-					WHERE vhd_posts.post_type = 'product' 
-					AND vhd_posts.post_status = 'publish'
-					AND vhd_postmeta.meta_key = '_sale_price' 
-					AND CAST(vhd_postmeta.meta_value AS SIGNED) > 0 AND 
-					(vhd_posts.post_content LIKE '%$keyword%' OR vhd_posts.post_title LIKE '%$keyword%')
-				";
-				$product_ids = $wpdb->get_var($sql);
-				
-				if (empty($product_ids)) return [];
+				$results = DGWT_WCAS()->nativeSearch->getSearchResults( $keyword, true, 'product-ids' );
+				$product_ids = [];
+
+				if (empty($results)) return [];
+
+				foreach ($results['suggestions'] as $v) {
+					$product_ids[] = $v->ID;
+				}
+
 				$sql = "SELECT DISTINCT vhd_terms.term_id, vhd_term_taxonomy.taxonomy, vhd_terms.name
 					FROM vhd_term_taxonomy
 					JOIN vhd_terms ON (vhd_term_taxonomy.term_id = vhd_terms.term_id)
 					JOIN vhd_term_relationships ON (vhd_terms.term_id = vhd_term_relationships.term_taxonomy_id)
 					WHERE vhd_term_taxonomy.taxonomy = 'product-brand' 
-					AND object_id IN ($product_ids)
+					AND object_id IN (".implode(',', $product_ids).")
 				";
 				return $wpdb->get_results($sql);
 				// return site_the_category_brands($categories);
@@ -575,7 +571,7 @@
 								</ul>
 								<?php if (count($brands) > 7): ?>
 									<div class="explore-more-action">
-										<a class="btn btn-link btn-viewmore" data-bs-toggle="collapse" href="#detailMoreBrands" role="button" aria-expanded="false" aria-controls="detailMoreBrands">
+										<a class="btn btn-outline-primary p-0 border-2 rounded fw-bold btn-viewmore mb-2" data-bs-toggle="collapse" href="#detailMoreBrands" role="button" aria-expanded="false" aria-controls="detailMoreBrands">
 											<span class="text-1">Xem thêm</span>
 											<span class="text-2">Rút gọn</span>
 										</a>
@@ -640,7 +636,7 @@
 									<?php endif; ?>
 								</ul>
 								<div class="explore-more-action">
-									<a class="btn btn-link btn-viewmore" data-bs-toggle="collapse" href="#detailMoreCate" role="button" aria-expanded="false" aria-controls="detailMoreCate">
+									<a class="btn btn-outline-primary p-0 border-2 rounded fw-bold btn-viewmore mb-2" data-bs-toggle="collapse" href="#detailMoreCate" role="button" aria-expanded="false" aria-controls="detailMoreCate">
 										<span class="text-1">Xem thêm</span>
 										<span class="text-2">Rút gọn</span>
 									</a>

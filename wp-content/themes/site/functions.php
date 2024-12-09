@@ -280,8 +280,10 @@ function site_body_class_add( $className = '' )
 	}
 }
 
-/** MORE **/
-//show_admin_bar(false);
+/** Show admin bar for Admin User **/
+if (!current_user_can('administrator')) {
+    show_admin_bar(false);
+}
 
 //Create Nav Menu
 if (function_exists ('register_nav_menus')) {
@@ -1022,9 +1024,9 @@ function ajax_replace_coupon() {
 add_action( 'wp_ajax_replace_coupon', 'ajax_replace_coupon' );
 add_action( 'wp_ajax_nopriv_replace_coupon', 'ajax_replace_coupon' );
 
-// add_action('woocommerce_process_shop_order_meta', 'handle_admin_edit_order', 10, 2);
+add_action('woocommerce_process_shop_order_meta', 'handle_admin_edit_order', 10, 2);
 
-// function handle_admin_edit_order($post_id, $post) {
-// 	$orderHookAction = new OrderHookAction();
-// 	$orderHookAction->order_update($post_id);
-// }
+function handle_admin_edit_order($post_id, $post) {
+	$orderHookAction = new OrderHookAction();
+	$orderHookAction->order_update($post_id);
+}

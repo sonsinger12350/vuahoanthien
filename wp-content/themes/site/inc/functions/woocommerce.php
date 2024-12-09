@@ -522,7 +522,7 @@ function site_wc_product_query( $query )
     $meta = array();
 
     if ( is_search() ) {
-        //$sort = site__get( 'sort', 'discount' );
+        $sort = site__get( 'sort', 'discount' );
     } else {
        $sort = site__get( 'sort', 'discount' );
     }

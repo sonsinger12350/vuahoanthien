@@ -240,7 +240,7 @@ if ( ! class_exists( 'YITH_WCWL_Frontend_Premium' ) ) {
 				 *
 				 * @return string
 				 */
-				$back_to_all_wishlists_link = sprintf( '<a href="%s" title="%s">%s</a>', esc_url( YITH_WCWL()->get_wishlist_url( 'manage' ) ), esc_attr( __( 'Back to all wishlists', 'yith-woocommerce-wishlist' ) ), wp_kses_post( apply_filters( 'yith_wcwl_back_to_all_wishlists_link_text', __( '&lsaquo; Back to all wishlists', 'yith-woocommerce-wishlist' ) ) ) );
+				$back_to_all_wishlists_link = sprintf( '<a href="%s">%s</a>', esc_url( YITH_WCWL()->get_wishlist_url( 'manage' ) ), wp_kses_post( apply_filters( 'yith_wcwl_back_to_all_wishlists_link_text', __( '&lsaquo; Back to all wishlists', 'yith-woocommerce-wishlist' ) ) ) );
 
 				echo '<div class="back-to-all-wishlists">' . wp_kses_post( $back_to_all_wishlists_link ) . '</div>';
 			}

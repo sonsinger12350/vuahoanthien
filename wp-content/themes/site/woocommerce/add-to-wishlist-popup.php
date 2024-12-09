@@ -106,7 +106,7 @@ $unique_id = wp_rand();
 				<div class="btn-new-list">
 					<p class="text-center form-divider">hay</p> 	
 					<p class="popup-description">
-						<a href="#" id="show-tab-newlist-btn" class="show-tab show-tab-newlist w-100 btn btn-primary px-1 border-2 rounded fw-bold fs-10" data-tab="create"><?php echo esc_html( apply_filters( 'yith_wcwl_create_new_list_text', __( 'Create a new list', 'yith-woocommerce-wishlist' ) ) ); ?></a>
+						<a href="#" id="show-tab-newlist-btn" class="show-tab show-tab-newlist w-100 btn btn-outline-primary px-1 border-2 rounded fw-bold fs-10 text-primary" data-tab="create"><?php echo esc_html( apply_filters( 'yith_wcwl_create_new_list_text', __( 'Create a new list', 'yith-woocommerce-wishlist' ) ) ); ?></a>
 					</p>
 				</div>
 				
@@ -209,7 +209,7 @@ $unique_id = wp_rand();
 			</div>
 
 			<div class="yith-wcwl-popup-footer">
-				<a rel="nofollow" class="wishlist-submit w-100 btn btn-outline-primary px-1 border-2 rounded fw-bold fs-10 <?php echo esc_attr( $link_popup_classes ); ?>" data-product-id="<?php echo esc_attr( $product_id ); ?>" data-product-type="<?php echo esc_attr( $product_type ); ?>" data-original-product-id="<?php echo esc_attr( $parent_product_id ); ?>">
+				<a rel="nofollow" class="wishlist-submit w-100 btn btn-primary px-1 border-2 rounded fw-bold fs-10 <?php echo esc_attr( $link_popup_classes ); ?>" data-product-id="<?php echo esc_attr( $product_id ); ?>" data-product-type="<?php echo esc_attr( $product_type ); ?>" data-original-product-id="<?php echo esc_attr( $parent_product_id ); ?>">
 					<?php echo esc_html( $label_popup ); ?>
 				</a>
 				

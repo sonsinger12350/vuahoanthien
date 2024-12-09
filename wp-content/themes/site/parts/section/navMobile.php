@@ -162,7 +162,7 @@ if( $user->ID>0 ) {
               </li>
               <?php */ ?>
               <li class="nav-item">
-                <a class="nav-link" href="<?php echo home_url( 'san-pham-yeu-thich-cua-ban' );//esc_url( wc_get_account_endpoint_url( 'wishlist' ) ); ?>">
+                <a class="nav-link" href="<?php echo home_url( 'san-pham-yeu-thich-cua-ban' ).'/?wishlist-action=manage';//esc_url( wc_get_account_endpoint_url( 'wishlist' ) ); ?>">
                   <i class="bi bi-heart-fill me-2"></i> Sản phẩm yêu thích
                 </a>
               </li>

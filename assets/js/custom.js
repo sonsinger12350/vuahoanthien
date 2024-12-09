@@ -188,6 +188,7 @@ window.addEventListener("load", function() {
             $(this).toggleClass('active');
             body.addClass('searchbox-opening');
             $('.search-box form').toggleClass('active').slideToggle();
+            $('.dgwt-wcas-search-input').focus();
         });
 
         $('.btn-copy').on('click',function(e){
@@ -262,9 +263,9 @@ window.addEventListener("load", function() {
                 }
 
                 // Add paged on url;
-                const url = new URL(location);
-                url.searchParams.set("pi", paged);
-                history.pushState({}, "", url);
+                // const url = new URL(location);
+                // url.searchParams.set("pi", paged);
+                // history.pushState({}, "", url);
             });
         });
 
@@ -1697,6 +1698,98 @@ window.addEventListener("load", function() {
 
     autoEarnGift();
     hideShowListGift();
+  
+    if ($('#custom-tooltip').length === 0) $('body').append('<div id="custom-tooltip"></div>');
+
+    let tooltipTimeout; // Lưu timeout
+    let mouseX, mouseY;
+
+    $('a[title]').on('mouseenter', function (e) {
+        const titleText = $(this).attr('title');
+        const tooltip = $('#custom-tooltip');
+
+        // Lưu title vào data-title và xóa thuộc tính title
+        $(this).attr('data-title', titleText).removeAttr('title');
+
+        // Lưu tọa độ chuột
+        mouseX = e.pageX;
+        mouseY = e.pageY;
+
+        // Thiết lập timeout để hiển thị tooltip sau 1 giây
+        tooltipTimeout = setTimeout(() => {
+            tooltip.text(titleText).css({
+                display: 'block',
+                opacity: 1,
+            });
+
+            // Lấy kích thước tooltip
+            const tooltipWidth = tooltip.outerWidth();
+            const tooltipHeight = tooltip.outerHeight();
+
+            // Điều chỉnh vị trí để không bị ẩn
+            let adjustedX = mouseX + 10;
+            let adjustedY = mouseY + 10;
+
+            // Kiểm tra nếu tooltip vượt ra ngoài khung nhìn
+            if (adjustedX + tooltipWidth > window.innerWidth) adjustedX = mouseX - tooltipWidth - 10; // Hiển thị bên trái con trỏ
+            if (adjustedY + tooltipHeight > window.innerHeight) adjustedY = mouseY - tooltipHeight + 50; // Hiển thị bên dưới con trỏ
+
+            // Cập nhật vị trí tooltip
+            tooltip.css({
+                top: adjustedY + 'px',
+                left: adjustedX + 'px',
+            });
+        }, 1000); // Độ trễ 1 giây
+    });
+
+    $('a[title]').on('mousemove', function (e) {
+        // Cập nhật vị trí chuột khi di chuyển qua phần tử
+        mouseX = e.pageX;
+        mouseY = e.pageY;
+    });
+
+    $('a[title]').on('mouseleave', function () {
+        const tooltip = $('#custom-tooltip');
+
+        // Xóa timeout để ngăn hiển thị tooltip nếu rời chuột trước 1 giây
+        clearTimeout(tooltipTimeout);
+
+        // Khôi phục title và ẩn tooltip
+        $(this).attr('title', $(this).attr('data-title')).removeAttr('data-title');
+        tooltip.css({
+            display: 'none',
+            opacity: 0,
+        });
+    });
+
+    $('body').on('click', '.btn-new-list .show-tab-newlist', function() {
+        let form = $('.yith-wcwl-popup-form:visible');
+        let input = form.find('[name="wishlist_name"]');
+
+        setTimeout(() => {
+            if (form.find('#new_wishlist_selector').val() == 'new' && form.find('[name="wishlist_name"]').val() != '') {
+                form.find('.wishlist-submit').click();
+            }
+            else {
+                input.click();
+                input.focus();
+                
+                form.find('.show-tab-newlist.active').removeClass('active');
+            }
+        }, 200);
+    });
+
+    $('body').on('change', '[name="wishlist_id"]', function() {
+        let form = $('.yith-wcwl-popup-form:visible');
+        let input = form.find('[name="wishlist_name"]');
+
+        setTimeout(() => {
+            input.click();
+            input.focus();
+            
+            form.find('.show-tab-newlist.active').removeClass('active');
+        }, 200);
+    });
 })(jQuery);
 
 /**

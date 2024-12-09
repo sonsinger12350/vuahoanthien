@@ -44,7 +44,7 @@ if ( ! empty( $args['layout_breakpoint'] ) && ! empty( $args['layout_breakpoint'
 				   type="search"
 				   class="dgwt-wcas-search-input"
 				   name="<?php echo Helpers::getSearchInputName(); ?>"
-				   value="<?php echo apply_filters( 'dgwt/wcas/search_bar/value', get_search_query(), DGWT_WCAS()->searchInstances ); ?>"
+				   value=""
 				   placeholder="<?php echo esc_attr( Helpers::getLabel( 'search_placeholder' ) ); ?>"
 				   autocomplete="off"
 				<?php echo ! empty( $customParams ) ? ' data-custom-params="' . htmlspecialchars( json_encode( (object) $customParams ) ) . '"' : ''; ?>

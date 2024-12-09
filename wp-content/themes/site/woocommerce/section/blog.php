@@ -12,17 +12,18 @@ $posts = get_posts(array(
 
 if( count($posts) ):
 
-  $cat_link = '#';
+  $cat_link = '/category/blog/';
+  // $cat_link = '#';
 
-  $categories = get_the_category($posts[0]->ID); 
+  // $categories = get_the_category($posts[0]->ID); 
 
-  //var_dump($categories);
+  // //var_dump($categories);
 
-  if ( ! empty( $categories ) ) {
+  // if ( ! empty( $categories ) ) {
 
-    $cat_link = esc_url( get_term_link($categories[0]->term_id ) );   
+  //   $cat_link = esc_url( get_term_link($categories[0]->term_id ) );   
 
-  }
+  // }
 
 ?>
 

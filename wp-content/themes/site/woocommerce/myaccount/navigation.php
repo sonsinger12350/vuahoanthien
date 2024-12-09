@@ -30,7 +30,7 @@ $currentURL = esc_url( home_url( $_SERVER['REQUEST_URI'] ) );
 $account_page_id = get_option('woocommerce_myaccount_page_id');
 $account_page_url = get_permalink($account_page_id);
 
-$wishlist_url = home_url( 'san-pham-yeu-thich-cua-ban' );
+$wishlist_url = home_url( 'san-pham-yeu-thich-cua-ban' ).'?wishlist-action=manage';
 
 ?>
 <div class="d-none d-lg-block col-lg-2 col-sidebar-product">

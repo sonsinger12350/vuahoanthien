@@ -407,12 +407,9 @@ foreach ($my_coupons as $code => $coupon) {
 						<span class="fw-bold">Thành tiền</span>
 						<div class="d-flex flex-column align-items-end">
 							<?php if (site_wc_price(site_wc_cart_get_total()) > 0): ?>
-								<span class="fs-4 fw-bold text-danger">
-									<span class="cart_total" data-value="<?php echo site_wc_cart_get_total(); ?>">
-										<?php echo site_wc_price(site_wc_cart_get_total()); ?>
-									</span>
-									<span><sup class="unit-price-symbol text-danger text">đ</sup></span>
-								</span>
+								<div class="fs-4 fw-bold text-danger">
+									<span class="cart_total" data-value="<?php echo site_wc_cart_get_total(); ?>"><?php echo site_wc_price(site_wc_cart_get_total()); ?></span><span><sup class="unit-price-symbol text-danger text">đ</sup></span>
+								</div>
 								<!-- <span><i>(Đã bao gồm VAT nếu có)</i></span> -->
 							<?php else: ?>
 								<span class="fs-4 fw-bold text-danger">0<sup class="unit-price-symbol text">đ</sup></span>

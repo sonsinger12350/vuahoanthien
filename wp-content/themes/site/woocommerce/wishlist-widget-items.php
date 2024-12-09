@@ -27,7 +27,7 @@ if ( ! defined( 'YITH_WCWL' ) ) {
 	exit;
 } // Exit if accessed directly
 
-$wishlist_url = home_url( 'san-pham-yeu-thich-cua-ban' );
+$wishlist_url = home_url( 'san-pham-yeu-thich-cua-ban' ).'/?wishlist-action=manage';
 // if( $user->ID>0 ) {
 //   $wishlist_url = wc_get_account_endpoint_url( 'wishlist' );
 // } else {
