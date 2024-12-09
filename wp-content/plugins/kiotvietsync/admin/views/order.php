@@ -1,7 +1,12 @@
 <form method="get" action="admin.php">
     <input type="hidden" name="page" value="plugin-kiotviet-sync-order">
     <div class="kvsync-wrapper wrap">
-        <h2 class="kv-title-top">Danh sách đơn đặt hàng</h2>
+        <h2 class="kv-title-top">
+            Danh sách đơn đặt hàng
+            <a href="https://www.kiotviet.vn/hdsd-kiotviet-sync/" target="_blank" style="float:right;color:red !important">
+                Hướng dẫn sử dụng
+            </a>
+        </h2>
         <?php
             $orderList->prepare_items();
             $orderList->search_box('search', 'search_id');

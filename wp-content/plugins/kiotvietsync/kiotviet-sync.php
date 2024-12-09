@@ -6,7 +6,7 @@
  * Plugin Name:       KiotViet Sync
  * Plugin URI:        https://kiotviet.vn
  * Description:       Plugin hỗ trợ đồng bộ sản phẩm, đơn hàng giữa website Wordpress với KiotViet.
- * Version:           1.7.9
+ * Version:           1.8.3
  * Author:            KiotViet
  * Author URI:        https://kiotviet.vn
  * License:           GPL-2.0+
@@ -23,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
 // define
 define('KIOTVIET_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
 define('KIOTVIET_PLUGIN_URL', plugin_dir_url( __FILE__ ));
-define('KIOTVIET_PLUGIN_VERSION', '1.7.9');
+define('KIOTVIET_PLUGIN_VERSION', '1.8.3');
 
 include_once "bootstrap.php";
 

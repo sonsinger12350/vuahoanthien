@@ -24,7 +24,7 @@ class Kiotviet_Sync
         if (defined('KIOTVIET_PLUGIN_VERSION')) {
             $this->version = KIOTVIET_PLUGIN_VERSION;
         } else {
-            $this->version = '1.7.9';
+            $this->version = '1.8.3';
         }
 
         $this->plugin_name = 'kiotviet-sync';

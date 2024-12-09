@@ -8,7 +8,12 @@
 <form method="get" action="admin.php">
     <input type="hidden" name="page" value="plugin-kiotviet-sync-order">
     <div class="kvsync-wrapper wrap">
-        <h2 class="kv-title-top">Lịch sử đồng bộ</h2>
+        <h2 class="kv-title-top">
+          Lịch sử đồng bộ
+          <a href="https://www.kiotviet.vn/hdsd-kiotviet-sync/" target="_blank" style="float:right;color:red !important">
+            Hướng dẫn sử dụng
+          </a>
+        </h2>
         <?php
             $logsList->prepare_items();
             $logsList->display();

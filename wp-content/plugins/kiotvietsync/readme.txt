@@ -3,7 +3,7 @@ Contributors: mykiot
 Donate link: https://www.kiotviet.vn/
 Tags: importer, sync, kiotviet, synchronized
 Requires at least: 4.9
-Tested up to: 6.5.3
+Tested up to: 6.5.5
 Stable tag: trunk
 Requires PHP: 7.1
 License: GPLv2 or later
@@ -53,6 +53,20 @@ Yes
 3. screenshot-3.png
 
 == Changelog ==
+= 1.8.3 =
+* 26/11/2024
+* Auto sync orders vs Product sync
+= 1.8.2 =
+* 18/11/2024
+* Disable image sync
+= 1.8.1 =
+* 02/10/2024
+* Increase chunk size
+= 1.8.0 =
+* 13/09/2024
+* Add guides
+* Fix bugs: synchronize images and galleries
+* Remove the description of the variation
 = 1.7.9 =
 * 23/05/2024
 * Update method to retrieve order IDs

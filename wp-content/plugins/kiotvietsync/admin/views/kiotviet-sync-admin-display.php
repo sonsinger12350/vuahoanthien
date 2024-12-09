@@ -12,6 +12,11 @@
  */
 ?>
 <div class="kvsync-wrapper wrap">
-    <h2 class="kv-title-top">KiotViet Sync</h2>
+    <h2 class="kv-title-top">
+        KiotViet Sync
+        <a href="https://www.kiotviet.vn/hdsd-kiotviet-sync/" target="_blank" style="float:right;color:red !important">
+            Hướng dẫn sử dụng
+        </a>
+    </h2>
     <div id="kvsync"></div>
 </div>

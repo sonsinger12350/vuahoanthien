@@ -290,6 +290,7 @@ class KiotvietWcProduct
                 $attributes[$attribute_key] = $attribute_value;
             }
             $variation->set_attributes($attributes);
+            $variation->set_description(null);
         }
     }
 
@@ -553,6 +554,10 @@ class KiotvietWcProduct
 
     protected function set_image_data(&$product, $data)
     {
+        if (!in_array($this->mapConfigProductSync['images'], get_option('kiotviet_sync_product_sync', []))) {
+            $product->set_image_id(0);
+            $product->set_gallery_image_ids(array());
+        }
         // Image URLs need converting to IDs before inserting.
         if (isset($data['raw_image_id'])) {
             $data['raw_image_id'] = $this->create_media($data['raw_image_id']);

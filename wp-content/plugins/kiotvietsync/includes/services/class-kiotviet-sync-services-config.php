@@ -33,9 +33,9 @@ class Kiotviet_Sync_Service_Config
         if (!empty($request['auto_sync_order'])) {
             update_option('kiotviet_sync_auto_sync_order', $request['auto_sync_order']);
         }
-
-        update_option('kiotviet_sync_product_sync', $productSync);
-
+        if (!empty($productSync)) {
+            update_option('kiotviet_sync_product_sync', $productSync);
+        }
         wp_send_json($this->HttpClient->responseSuccess(true));
     }
 

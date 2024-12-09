@@ -62,7 +62,12 @@ if(isset($_POST['kv_saveoption'])) {
 </style>
 <form method="post" action="">
     <div class="kvsync-wrapper wrap">
-        <h2 class="kv-title-top">Cài đặt</h2>
+        <h2 class="kv-title-top">
+            Cài đặt
+            <a href="https://www.kiotviet.vn/hdsd-kiotviet-sync/" target="_blank" style="float:right;color:red !important">
+                Hướng dẫn sử dụng
+            </a>
+        </h2>
         <p>
             <input type="checkbox" name="kv_updatebysku" id="kv_updatebysku" value="1" <?php if(get_option('kv_updatebysku') == '1') echo 'checked'; ?>>
             <label for="kv_updatebysku" style="margin-bottom: 0;">Đồng bộ sản phẩm qua mã sản phẩm (SKU)</label>
