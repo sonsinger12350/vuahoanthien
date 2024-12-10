@@ -160,17 +160,6 @@ class WC_Widget_Price_Filter extends WC_Widget {
 			}
 		}
 
-
-		$queried_object = get_queried_object();
-
-		if (is_a($queried_object, 'WP_Term')) {
-			$tax_query[] = [
-				'taxonomy' => $queried_object->taxonomy,
-				'field' => 'term_id',
-				'terms' => [$queried_object->term_id],
-			];
-		}
-		
 		$meta_query = new WP_Meta_Query( $meta_query );
 		$tax_query  = new WP_Tax_Query( $tax_query );
 		$search     = WC_Query::get_main_search_query_sql();

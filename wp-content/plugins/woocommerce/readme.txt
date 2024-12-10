@@ -2,9 +2,9 @@
 Contributors: automattic, woocommerce, mikejolley, jameskoster, claudiosanches, rodrigosprimo, peterfabian1000, vedjain, jamosova, obliviousharmony, konamiman, sadowski, wpmuguru, royho, barryhughes-1, claudiulodro, tiagonoronha, ryelle, levinmedia, aljullu, nerrad, joshuawold, assassinateur, haszari, mppfeiffer, nielslange, opr18, ralucastn, tjcafferkey, danielwrobert, patriciahillebrandt, albarin, dinhtungdu, imanish003, karolmanijak, sunyatasattva, alexandrelara, gigitux, danieldudzic, samueljseay, alexflorisca, opr18, tarunvijwani, pauloarromba, saadtarhi, bor0, kloon, coreymckrill, jorgeatorres, leifsinger
 Tags: online store, ecommerce, shop, shopping cart, sell online
 Requires at least: 6.5
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 9.1.2
+Stable tag: 9.4.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -169,13 +169,9 @@ WooCommerce comes with some sample data you can use to see how products look; im
 
 == Changelog ==
 
-= 9.1.4 2024-07-26 =
+= 9.4.3 2024-11-25 =
 
 **WooCommerce**
-
-* Fix - Revert fixing terms count in tracking PR as it caused product_add_publish to be triggered more than usual. [#49797](https://github.com/woocommerce/woocommerce/pull/49797)
-* Fix - Hardening against XSS via the Product Button unescaped attribute. [#50010](https://github.com/woocommerce/woocommerce/pull/50010)
-* Fix - Enhance escaping for block attributes. [#50015](https://github.com/woocommerce/woocommerce/pull/50015)
 
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/woocommerce/trunk/changelog.txt).
