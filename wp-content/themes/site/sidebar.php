@@ -295,13 +295,14 @@
 		}
 		else {
 			if (isset($_GET['s'])) {
-				$keyword = $_GET['s'];
-				$results = DGWT_WCAS()->nativeSearch->getSearchResults( $keyword, true, 'product-ids' );
+				global $wp_query;
+
+				$results = $wpdb->get_results($wp_query->request);
 				$product_ids = [];
 
 				if (empty($results)) return [];
 
-				foreach ($results['suggestions'] as $v) {
+				foreach ($results as $v) {
 					$product_ids[] = $v->ID;
 				}
 
@@ -543,9 +544,9 @@
 				<?php endif; ?>
 
 				<ul class="nav flex-column">
-					<li class="nav-item my-2">
-						<b><a href="">Thương hiệu</a></b>
-						<?php if ($brands): ?>
+					<?php if (!empty($brands)): ?>
+						<li class="nav-item my-2">
+							<b><a href="">Thương hiệu</a></b>
 							<div class="explore-more <?php echo count($brands) > 7 ? '' : 'tooShort'; ?>">
 								<ul class="nav <?php echo count($brands) > 7 ? 'collapse' : ''; ?>" id="detailMoreBrands">
 									<?php 
@@ -575,71 +576,72 @@
 									</div>
 								<?php endif; ?>
 							</div>
-						<?php endif; ?>
-					</li>
+						</li>
+					<?php endif; ?>
 					
-					<?php if ($level <= 3): ?>
-						<li class="nav-item my-2">
-							<b><a href="">Phân loại</a></b>
-							<div class="explore-more">
-								<ul class="nav flex-column colltermsapse" id="detailMoreCate">
-									<?php //var_dump($terms); 
-									?>
-									<?php if (!empty($terms)): ?>
-										<?php foreach ($terms as $term): ?>
-											<li>
-												<?php
-													$category_link = get_term_link($term->term_id);
+					<?php if (!empty($terms)): ?>
+						<?php if ($level <= 3): ?>
+							<li class="nav-item my-2">
+								<b><a href="">Phân loại</a></b>
+								<div class="explore-more">
+									<ul class="nav flex-column colltermsapse" id="detailMoreCate">
+										<?php if (!empty($terms)): ?>
+											<?php foreach ($terms as $term): ?>
+												<li>
+													<?php
+														$category_link = get_term_link($term->term_id);
 
-													// Check if there are any query parameters in the current URL
-													if (!empty($_GET)) {
-														// Loop through each query parameter in the $_GET array
-														foreach ($_GET as $key => $value) {
-															// Check if the parameter is an array (e.g., brands[])
-															if (is_array($value)) {
-																// Loop through the array and append each value individually
-																foreach ($value as $val) {
-																	$category_link = add_query_arg($key . '[]', $val, $category_link);
+														// Check if there are any query parameters in the current URL
+														if (!empty($_GET)) {
+															// Loop through each query parameter in the $_GET array
+															foreach ($_GET as $key => $value) {
+																if ($key == 'cats') continue;
+																// Check if the parameter is an array (e.g., brands[])
+																if (is_array($value)) {
+																	// Loop through the array and append each value individually
+																	foreach ($value as $val) {
+																		$category_link = add_query_arg($key . '[]', $val, $category_link);
+																	}
+																} else {
+																	// Append the single parameter to the category link
+																	$category_link = add_query_arg($key, $value, $category_link);
 																}
-															} else {
-																// Append the single parameter to the category link
-																$category_link = add_query_arg($key, $value, $category_link);
 															}
 														}
-													}
 
-													$hasChildTerm = hasChildTerm($term->term_id);
-												?>
-												<?php if ((($level == 1 || $level == 3 || ($value_brands && $level == 0)) || is_shop() && !is_product_category('gia-soc-hom-nay')) && $hasChildTerm): ?>
-													<a class="cate_link checkbox-link <?php echo $current_term_link == $category_link ? 'active' : ''; ?>" href="<?php echo $category_link; ?>"><?php echo $term->name; ?></a>
-												<?php else: ?>
-													<label class="custom-checkbox">
-														<input type="checkbox" name="cats[]" value="<?php echo $term->term_id; ?>" <?php echo in_array($term->term_id, $value_cats) ? 'checked' : ''; ?>>
-														<span class="custom-checkbox-field"><span class="checkbox-item"></span> <span class="field-name"><?php echo $term->name; ?></span></span>
-													</label>
-													<?php
-													// Add to sidebar_choose
-													if (in_array($term->term_id, $value_cats)) {
-														$sidebar_choose['cats[]=' . $term->term_id] = $term->name;
-													}
+														$hasChildTerm = hasChildTerm($term->term_id);
 													?>
-												<?php endif; ?>
-											</li>
-										<?php endforeach; ?>
-									<?php else: ?>
-										<?php foreach ($all_categories as $category_id => $category_name): ?>
-											<li><a class="cate_link checkbox-link" href="<?php echo get_term_link($category_id, 'product_cat'); ?>"><?php echo $category_name; ?></a></li>
-										<?php endforeach; ?>
-									<?php endif; ?>
-								</ul>
-								<div class="explore-more-action">
-									<a class="btn btn-outline-primary p-0 border-2 rounded fw-bold btn-viewmore mb-2" data-bs-toggle="collapse" href="#detailMoreCate" role="button" aria-expanded="false" aria-controls="detailMoreCate">
-										<span class="text-1">Xem thêm</span>
-										<span class="text-2">Rút gọn</span>
-									</a>
+													<?php if ((($level == 1 || $level == 3 || ($value_brands && $level == 0)) || is_shop() && !is_product_category('gia-soc-hom-nay')) && $hasChildTerm): ?>
+														<a class="cate_link checkbox-link <?php echo $current_term_link == $category_link ? 'active' : ''; ?>" href="<?php echo $category_link; ?>"><?php echo $term->name; ?></a>
+													<?php else: ?>
+														<label class="custom-checkbox">
+															<input type="checkbox" name="cats[]" value="<?php echo $term->term_id; ?>" <?php echo in_array($term->term_id, $value_cats) ? 'checked' : ''; ?>>
+															<span class="custom-checkbox-field"><span class="checkbox-item"></span> <span class="field-name"><?php echo $term->name; ?></span></span>
+														</label>
+														<?php
+														// Add to sidebar_choose
+														if (in_array($term->term_id, $value_cats)) {
+															$sidebar_choose['cats[]=' . $term->term_id] = $term->name;
+														}
+														?>
+													<?php endif; ?>
+												</li>
+											<?php endforeach; ?>
+										<?php else: ?>
+											<?php foreach ($all_categories as $category_id => $category_name): ?>
+												<li><a class="cate_link checkbox-link" href="<?php echo get_term_link($category_id, 'product_cat'); ?>"><?php echo $category_name; ?></a></li>
+											<?php endforeach; ?>
+										<?php endif; ?>
+									</ul>
+									<div class="explore-more-action">
+										<a class="btn btn-outline-primary p-0 border-2 rounded fw-bold btn-viewmore mb-2" data-bs-toggle="collapse" href="#detailMoreCate" role="button" aria-expanded="false" aria-controls="detailMoreCate">
+											<span class="text-1">Xem thêm</span>
+											<span class="text-2">Rút gọn</span>
+										</a>
+									</div>
 								</div>
-							</div>
-						</li>
+							</li>
+						<?php endif; ?>
 					<?php endif; ?>
 
 					<li class="nav-item my-2">
