@@ -1,5 +1,4 @@
 <?php
-
 	function fetch_term_by_price($level = 0) {
 		$value_prices = site__get('prices', []);
 
@@ -7,8 +6,6 @@
 		global $wpdb;
 
 		$value_brands = site__get('brands', []);
-		$value_cats   = site__get('cats', []);
-		$value_types  = site__get('types', []);
 		$exclude_ids = [100, 15, 23, 137];
 		$priceArr = explode('-', $value_prices[0]);
 		$wherePrice = '';

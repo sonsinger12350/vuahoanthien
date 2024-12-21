@@ -563,31 +563,35 @@ function site_wc_product_query( $query )
 
         // Push products with price 0 or no price to the end when sorting by price
         if (strpos($sort, '_price') !== false) {
+            if ($order == 'ASC') {
+                $query->set('meta_query', array(
+                    array(
+                        'key'     => '_price',
+                        'value'   => 0,
+                        'compare' => '>',
+                        'type'    => 'NUMERIC'
+                    )
+                ));
+            }
+
             $query->set('orderby', array(
                 'meta_value_num' => $order,
                 'price_zero_last' => 'ASC'
             ));
 
-            $meta_query = $query->get('meta_query');
-            if (!is_array($meta_query)) {
-                $meta_query = array();
-            }
+            // $meta_query = $query->get('meta_query');
+            // if (!is_array($meta_query)) {
+            //     $meta_query = array();
+            // }
 
-            $meta_query[] = array(
-                'relation' => 'OR',
-                array(
-                    'key' => '_price',
-                    'value' => 0,
-                    'compare' => '!=',
-                    'type' => 'NUMERIC'
-                ),
-                array(
-                    'key' => '_price',
-                    'compare' => 'NOT EXISTS'
-                )
-            );
+            // $meta_query[] = array(
+            //     'key' => '_price',
+            //     'value' => 0,
+            //     'compare' => '!=',
+            //     'type' => 'NUMERIC'
+            // );
 
-            $query->set('meta_query', $meta_query);
+            // $query->set('meta_query', $meta_query);
         }
     }
 
