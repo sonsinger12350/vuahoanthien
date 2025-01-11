@@ -603,7 +603,8 @@ jQuery( function ( $ ) {
 				status: $( '#order_status' ).val()
 			} );
 
-			var value = window.prompt( woocommerce_admin_meta_boxes.i18n_add_fee );
+			// var value = window.prompt( woocommerce_admin_meta_boxes.i18n_add_fee );
+			var value = 0;
 
 			if ( null == value ) {
 				window.wcTracks.recordEvent( 'order_edit_add_fee_cancel', {

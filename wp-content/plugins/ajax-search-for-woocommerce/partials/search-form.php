@@ -67,6 +67,9 @@ if ( ! empty( $args['layout_breakpoint'] ) && ! empty( $args['layout_breakpoint'
 			<?php endif ?>
 
 			<?php do_action( 'dgwt/wcas/form' ); ?>
+			<div id="custom-search-history">
+				<div class="list"></div>
+			</div>
 		</div>
 	</form>
 </div>

@@ -32,6 +32,13 @@ if ( wc_tax_enabled() ) {
 	$classes_options  = wc_get_product_tax_class_options();
 	$show_tax_columns = count( $order_taxes ) === 1;
 }
+// Automattic\WooCommerce\Admin\Overrides\Order::get_fee()
+$listFee = $order->get_items( 'fee' );
+$feeTitle = '';
+
+if (!empty($listFee)) {
+	$feeTitle = $listFee[key($listFee)]->get_name();
+}
 ?>
 <div class="woocommerce_order_items_wrapper wc-order-items-editable">
 	<table cellpadding="0" cellspacing="0" class="woocommerce_order_items">
@@ -176,9 +183,10 @@ if ( wc_tax_enabled() ) {
 				</td>
 			</tr>
 		<?php endif; ?>
-		<?php if ( 0 < $order->get_total_fees() ) : ?>
+		<?php if ( !empty($order->get_total_fees()) ) : ?>
 			<tr>
-				<td class="label"><?php esc_html_e( 'Fees:', 'woocommerce' ); ?></td>
+				<!-- <td class="label"><?php esc_html_e( 'Fees:', 'woocommerce' ); ?></td> -->
+				<td class="label"><?php esc_html_e( $feeTitle ); ?></td>
 				<td width="1%"></td>
 				<td class="total">
 					<?php echo wc_price( $order->get_total_fees(), array( 'currency' => $order->get_currency() ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

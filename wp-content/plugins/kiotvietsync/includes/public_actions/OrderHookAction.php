@@ -202,9 +202,10 @@ class OrderHookAction
                     'orderDelivery' => array(
                         'type' => 1,
                         'price' => 0,
-                        'receiver' => $orderData['billing']['first_name'] . ' ' . $orderData['billing']['last_name'],
-                        'contactNumber' => $orderData['billing']['phone'],
-                        'address' => $orderData['billing']['address_1'] . ', ' . $orderObj->get_billing_city() . ', ' . $orderObj->get_billing_country(),
+                        'receiver' => $orderData['shipping']['first_name'] . ' ' . $orderData['shipping']['last_name'],
+                        'contactNumber' => $orderData['shipping']['phone'],
+                        // 'address' => $orderData['billing']['address_1'] . ', ' . $orderObj->get_billing_city() . ', ' . $orderObj->get_billing_country(),
+                        'address' => $orderData['shipping']['address_1'],
                     ),
                     'surchages' => $surchagesData,
                     'Extra' => $this->orderExtra,
@@ -243,6 +244,119 @@ class OrderHookAction
                 var_dump($e);
                 kv_sync_log('WebSite', 'KiotViet', "order_processed Exception: {$e->getMessage()}", json_encode($response['data']), 2, 0);
             }
+        }
+    }
+
+    public function order_update($orderId)
+    {
+        // NOTE: update order
+        try {
+            $KvId = $this->wpdb->get_var("SELECT `order_kv_id` FROM `vhd_kiotviet_sync_orders` WHERE `order_id` = '$orderId'");
+            $orderObj = wc_get_order($orderId);
+
+            if (!$orderObj || !$KvId) {
+                return [
+                    'status' => 'error',
+                    'msg' => 'Không tìm thấy đơn hàng trên website',
+                ];
+            }
+
+            $orderData = $orderObj->get_data();
+            $orderItems = $orderObj->get_items();
+            $productItems = [];
+
+            foreach ($orderItems as $orderItem) {
+                if ($orderItem) {
+                    $orderItemData = $orderItem->get_data();
+                    $productId = $orderItemData['product_id'];
+
+                    $productObj = wc_get_product($productId);
+                    // product variant
+                    if (WC_Product_Factory::get_product_type($productId) == "variable") {
+                        $productId = $orderItemData['variation_id'];
+                        $productObj = wc_get_product($productId);
+                    }
+
+                    if ($productObj) {
+                        $product = $productObj->get_data();
+                        $price = $orderItemData['subtotal'] / $orderItemData['quantity'];
+
+                        if(get_option('kv_syncorderbysku') == '1') {
+                            $kvProductId = $this->get_kv_product_id_from_wc_product_sku($product['sku']);
+                        } else {
+                            $kvProductId = $this->get_kv_product_id_from_wc_product_id($productId);
+                        }
+
+                        if ($kvProductId == -1) {
+                            if($kvProductId == -1) {
+                                $kvProductId = $this->create_kv_product_from_wc_product($productObj);
+                                $productAddKv = $kvProductId;
+                                $product = $productObj->get_data();
+                            }
+                        }
+
+                        $productItems[] = [
+                            'productId' => $kvProductId,
+                            'productCode' => $product['sku'],
+                            'quantity' => $orderItemData['quantity'],
+                            'price' => $price,
+                            'discount' => 0,
+                            'discountRatio' => 0,
+                        ];
+                    } else {
+                        return [
+                            'status' => 'error',
+                            'msg' => 'Sản phẩm trong đơn hàng đã bị xóa trên website.',
+                        ];
+                    }
+                }
+            }
+
+            $totalFee = 0;
+
+            if (!empty($orderData['fee_lines'])) {
+                foreach ($orderData['fee_lines'] as $fee) {
+                    $totalFee += $fee->get_total();
+                }
+            }
+
+            $kvOrderData = [
+                'branchId' => $this->orderBranch,
+                'totalPayment' => 0,
+                'discount' => $orderData['discount_total'] + abs($totalFee),
+                'makeInvoice' => false,
+                'method' => 'CASH',
+                'status' => 0,
+                'orderDetails' => $productItems,
+                'surchages' => [
+                    'id' => '120402',
+                    'code' => 'THKSHIPPINGWEB',
+                    'price' => $orderData['shipping_total']
+                ]
+            ];
+
+            $response = $this->kiotvietApi->request('PUT', 'https://public.kiotapi.com/orders/'.$KvId, $kvOrderData, 'json', [
+                "Partner" => "KVSync",
+            ]);
+
+            if ($response['status'] != 'error') {
+                kv_sync_log('Website', 'KiotViet', 'Cập nhật đơn hàng trên KiotViet thành công, mã đơn hàng: #' . $response['data']['code'], json_encode($response['data']), 2, $orderId);
+            } else {
+                // $this->remove_kv_product($productAddKv);
+                $msg = 'Có lỗi xảy ra, vui lòng kiểm tra lại';
+                if($response['message']) $msg = $response['message'];
+                if($response['error']['responseStatus']['message']) $msg = $response['error']['responseStatus']['message'];
+                kv_sync_log('WebSite', 'KiotViet', "order_processed error: {$msg}", json_encode($response['data']), 2, 0);
+
+                return [
+                    'status' => 'error',
+                    'msg' => $msg,
+                ];
+            }
+            return $response;
+        } catch (Exception $e) {
+            var_dump($e);
+            kv_sync_log('WebSite', 'KiotViet', "order_processed Exception: {$e->getMessage()}", json_encode($response['data']), 2, 0);
         }
     }
 
