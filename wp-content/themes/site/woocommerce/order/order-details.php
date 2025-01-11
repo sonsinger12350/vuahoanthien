@@ -91,16 +91,35 @@ if ( $show_downloads ) {
 				'payment_method' => 'Phương thức thanh toán', 
 			);
 
-			foreach ( $list as $key => $label )
-			{
-				if( empty($data[$key]) ) continue;
+			foreach ( $data as $key => $value ) {
+				if (strpos($key, 'fee') !== false) {
+					$shipLabel = $list['shipping'];
+					$shipValue = $data['shipping']['value'];
+					unset($data['shipping']);
+				}
+			}
 
-				$total = $data[$key];
-				?>
+			foreach ( $data as $key => $value ) {
+				if (strpos($key, 'fee') !== false) {
+					$total = $value['value'];
+					$label = $value['label'];
+				}
+				else {
+					if( empty($list[$key]) ) continue;
+					$total = $value['value'];
+					$label = $list[$key];
+				}
+			?>
 				<tr row-<?php echo $key?>>
 					<th scope="row"><?php echo esc_html( $label ); ?></th>
-					<td><?php echo ( 'payment_method' === $key ) ? esc_html( $total['value'] ) : wp_kses_post( $total['value'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+					<td><?php echo ( 'payment_method' === $key ) ? esc_html( $total ) : wp_kses_post( $total ); ?></td>
 				</tr>
+				<?php if (strpos($key, 'fee') !== false): ?>
+					<tr row-shipping>
+						<th scope="row"><?php echo esc_html( $shipLabel ); ?></th>
+						<td><?php echo wp_kses_post( $shipValue ) ?></td>
+					</tr>
+				<?php endif ?>
 				<?php
 			}
 			?>

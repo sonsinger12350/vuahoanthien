@@ -1030,3 +1030,212 @@ function handle_admin_edit_order($post_id, $post) {
 	$orderHookAction = new OrderHookAction();
 	$orderHookAction->order_update($post_id);
 }
+
+add_filter('wc_order_is_editable', function($is_editable, $order_id) {
+    $order = wc_get_order($order_id);
+    if ($order && $order->get_status() === 'processing') {
+        $is_editable = true;
+    }
+    return $is_editable;
+}, 10, 2);
+
+// Thêm cột mới vào danh sách đơn hàng
+add_filter('manage_edit-shop_order_columns', 'custom_shop_order_column', 20);
+function custom_shop_order_column($columns) {
+    $new_columns = [];
+
+    foreach ($columns as $key => $value) {
+        $new_columns[$key] = $value;
+
+		if ($key == 'order_number') $new_columns['kiotviet_code'] = __('Mã ĐH KiotViet', 'text-domain');
+    }
+
+    return $new_columns;
+}
+
+// Hiển thị nội dung cho cột mới
+add_action('manage_shop_order_posts_custom_column', 'custom_shop_order_column_content', 20, 2);
+function custom_shop_order_column_content($column, $post_id) {
+	if ('kiotviet_code' === $column) {
+		global $wpdb;
+
+		$data = $wpdb->get_var("SELECT data_raw FROM vhd_kiotviet_sync_orders WHERE order_id = $post_id");
+
+		if (!empty($data)) {
+			$data = json_decode($data);
+			echo '#'.$data->code;
+		}
+    }
+}
+
+// Đăng ký cron job
+if ( ! wp_next_scheduled( 'clear_old_search_history' ) ) {
+    wp_schedule_event( time(), 'daily', 'clear_old_search_history' ); // Chạy mỗi ngày
+}
+
+// Hàm xóa lịch sử tìm kiếm cũ
+add_action( 'clear_old_search_history', 'delete_old_search_history' );
+
+function delete_old_search_history() {
+    global $wpdb;
+
+	$table = "{$wpdb->prefix}search_history";
+	$maxRecord = 5;
+
+	$sql = "SELECT user_id, COUNT(1) total FROM $table GROUP BY user_id";
+	$data = $wpdb->get_results($sql);
+
+	if (!empty($data)) {
+		foreach ($data as $v) {
+			if ($v->total > $maxRecord) {
+				$removeQty = $v->total - $maxRecord;
+				$ids = $wpdb->get_var("SELECT GROUP_CONCAT(id ORDER BY created_at ASC LIMIT $removeQty) FROM $table WHERE user_id = {$v->user_id}");
+	
+				if (!empty($ids)) {
+					$wpdb->query(
+						$wpdb->prepare(
+							"DELETE FROM {$wpdb->prefix}search_history WHERE id IN ($ids)"
+						)
+					);
+				}
+			}
+		}
+	}
+
+    // Đảm bảo rằng cron job sẽ không chạy khi không có dữ liệu cần xóa
+    if ( ! wp_next_scheduled( 'clear_old_search_history' ) ) {
+        wp_schedule_event( time(), 'daily', 'clear_old_search_history' );
+    }
+}
+
+function ajax_get_search_history() {
+	global $wpdb;
+
+	if (is_user_logged_in()) $user_id = get_current_user_id();
+	else $user_id = $_COOKIE['guest_user_id'];
+
+	$results = $wpdb->get_results("SELECT keyword FROM vhd_search_history WHERE user_id = $user_id ORDER BY created_at DESC LIMIT 5");
+	$content = "";
+
+	if (!empty($results)) {
+		foreach ($results as $v) {
+			$content .= "<a class='item' href='".home_url()."?s={$v->keyword}&post_type=product&dgwt_wcas=1'>{$v->keyword}</a>";
+		}
+	}
+	else {
+		$content = "<p class='no-data'>Chưa có lịch sử tìm kiếm</p>";
+	}
+
+	wp_send_json_success( $content );
+
+    wp_die();
+}
+
+add_action( 'wp_ajax_get_search_history', 'ajax_get_search_history' );
+add_action( 'wp_ajax_nopriv_get_search_history', 'ajax_get_search_history' );
+
+function ajax_save_search_history() {
+	global $wpdb;
+
+	$keyword = sanitize_text_field($_POST['keyword']);
+
+	if (empty($keyword)) return false;
+
+	if (is_user_logged_in()) {
+		$isGuest = 0;
+        $user_id = get_current_user_id();
+    } else {
+		$isGuest = 1;
+
+        if (!isset($_COOKIE['guest_user_id'])) {
+            $user_id = intval(rand(100000, 999999));
+            setcookie('guest_user_id', $user_id, time() + (30 * DAY_IN_SECONDS), COOKIEPATH, COOKIE_DOMAIN);
+        }
+		else {
+            $user_id = $_COOKIE['guest_user_id'];
+        }
+    }
+
+	// Save search history
+	$wpdb->insert(
+		$wpdb->prefix . 'search_history',
+		array(
+			'keyword' => $keyword,
+			'user_id' => $user_id,
+			'is_guest' => $isGuest
+		)
+	);
+}
+
+add_action( 'wp_ajax_save_search_history', 'ajax_save_search_history' );
+add_action( 'wp_ajax_nopriv_save_search_history', 'ajax_save_search_history' );
+
+function my_enqueue_admin_scripts() {
+    wp_enqueue_script( 'my-custom-admin-script', get_template_directory_uri().'/assets/js/custom-admin.js', array(), time(), true );
+}
+add_action( 'admin_enqueue_scripts', 'my_enqueue_admin_scripts' );
+
+class Custom_WC_Widget_Price_Filter extends WC_Widget_Price_Filter {
+
+    /**
+     * Ghi đè hàm get_filtered_price để thêm điều kiện taxonomy hiện tại.
+     */
+    protected function get_filtered_price() {
+		global $wpdb;
+
+		$args       = WC()->query->get_main_query()->query_vars;
+		$tax_query  = isset( $args['tax_query'] ) ? $args['tax_query'] : array();
+		$meta_query = isset( $args['meta_query'] ) ? $args['meta_query'] : array();
+
+		if ( ! is_post_type_archive( 'product' ) && ! empty( $args['taxonomy'] ) && ! empty( $args['term'] ) ) {
+			$tax_query[] = WC()->query->get_main_tax_query();
+		}
+
+		foreach ( $meta_query + $tax_query as $key => $query ) {
+			if ( ! empty( $query['price_filter'] ) || ! empty( $query['rating_filter'] ) ) {
+				unset( $meta_query[ $key ] );
+			}
+		}
+
+		$queried_object = get_queried_object();
+
+		if (is_a($queried_object, 'WP_Term')) {
+			$tax_query[] = [
+				'taxonomy' => $queried_object->taxonomy,
+				'field' => 'term_id',
+				'terms' => [$queried_object->term_id],
+			];
+		}
+		
+		$meta_query = new WP_Meta_Query( $meta_query );
+		$tax_query  = new WP_Tax_Query( $tax_query );
+		$search     = WC_Query::get_main_search_query_sql();
+
+		$meta_query_sql   = $meta_query->get_sql( 'post', $wpdb->posts, 'ID' );
+		$tax_query_sql    = $tax_query->get_sql( $wpdb->posts, 'ID' );
+		$search_query_sql = $search ? ' AND ' . $search : '';
+
+		$sql = "
+			SELECT min( min_price ) as min_price, MAX( max_price ) as max_price
+			FROM {$wpdb->wc_product_meta_lookup}
+			WHERE product_id IN (
+				SELECT ID FROM {$wpdb->posts}
+				" . $tax_query_sql['join'] . $meta_query_sql['join'] . "
+				WHERE {$wpdb->posts}.post_type IN ('" . implode( "','", array_map( 'esc_sql', apply_filters( 'woocommerce_price_filter_post_type', array( 'product' ) ) ) ) . "')
+				AND {$wpdb->posts}.post_status = 'publish'
+				" . $tax_query_sql['where'] . $meta_query_sql['where'] . $search_query_sql . '
+			)';
+
+		$sql = apply_filters( 'woocommerce_price_filter_sql', $sql, $meta_query_sql, $tax_query_sql );
+
+		return $wpdb->get_row( $sql ); // WPCS: unprepared SQL ok.
+	}
+}
+
+// Hủy widget gốc và đăng ký widget mới
+add_action('widgets_init', 'replace_wc_price_filter_widget');
+
+function replace_wc_price_filter_widget() {
+    unregister_widget('WC_Widget_Price_Filter');
+    register_widget('Custom_WC_Widget_Price_Filter');
+}

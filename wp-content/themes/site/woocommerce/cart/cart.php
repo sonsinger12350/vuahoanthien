@@ -328,7 +328,7 @@ foreach ($my_coupons as $code => $coupon) {
 								<p class="line-1 <?php echo ($need_amount == 0) ? 'd-none' : ''; ?>" style="display: none">
 									<?php //if ($need_amount != null ): 
 									?>
-									Chỉ cần mua thêm <b><span class="need_amount" data-min="<?php echo $min; ?>"><?php echo site_wc_price($need_amount); ?></span><span><sup class="unit-price-symbol text-danger text">đ</sup></span></b> để nhận thêm ưu đãi
+									Chỉ cần mua thêm <b><span class="need_amount" data-min="<?php echo $min; ?>"><?php echo site_wc_price($need_amount); ?></span><span><sup class="unit-price-symbol text">đ</sup></span></b> để nhận thêm ưu đãi
 									<?php //endif 
 									?>
 									<?php
@@ -384,13 +384,13 @@ foreach ($my_coupons as $code => $coupon) {
 					<?php if (count($cart_coupons) > 0 || count($cart_point_reward) > 0): ?>
 						<div class="d-flex justify-content-between pb-2 border-bottom">
 							<small>Tổng</small>
-							<small><?php echo site_wc_price($total); ?>đ</small>
+							<small><?php echo site_wc_price($total); ?><sup class="unit-price-symbol unit-price-total">đ</sup></small>
 						</div>
 						<?php foreach ($cart_coupons as $code => $coupon) : ?>
 							<div class="cart_coupon border-bottom pt-2 pb-2 d-flex justify-content-between coupon-<?php echo esc_attr(sanitize_title($code)); ?>"
 								data-amount="<?php echo $coupon->amount; ?>"
 								data-minimum="<?php echo $coupon->minimum_amount; ?>">
-								<small>Voucher [<a class="text-danger<?php echo $a_c; ?>" href="<?php echo add_query_arg('remove_coupon', urlencode($coupon->get_code())); ?>" title="Xóa">&times;</a>]</small>
+								<small>Quà tặng [<a class="text-danger<?php echo $a_c; ?>" href="<?php echo add_query_arg('remove_coupon', urlencode($coupon->get_code())); ?>" title="Xóa">&times;</a>]</small>
 								<small><?php echo site_wc_coupon_discount($coupon); ?></small>
 							</div>
 						<?php endforeach; ?>
@@ -408,7 +408,7 @@ foreach ($my_coupons as $code => $coupon) {
 						<div class="d-flex flex-column align-items-end">
 							<?php if (site_wc_price(site_wc_cart_get_total()) > 0): ?>
 								<div class="fs-4 fw-bold text-danger">
-									<span class="cart_total" data-value="<?php echo site_wc_cart_get_total(); ?>"><?php echo site_wc_price(site_wc_cart_get_total()); ?></span><span><sup class="unit-price-symbol text-danger text">đ</sup></span>
+									<span class="cart_total" data-value="<?php echo site_wc_cart_get_total(); ?>"><?php echo site_wc_price(site_wc_cart_get_total()); ?></span><span><sup class="unit-price-symbol text">đ</sup></span>
 								</div>
 								<!-- <span><i>(Đã bao gồm VAT nếu có)</i></span> -->
 							<?php else: ?>

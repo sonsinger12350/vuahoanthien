@@ -263,7 +263,7 @@ function site_wc_coupon_discount( $coupon, $prev = '-' )
 
     if( $amount > 0 )
     {
-        $html = $prev . site_wc_price( $amount ) . '<span><sup class="text-danger text">đ</sup></span>';
+        $html = $prev . site_wc_price( $amount ) . '<span><sup class="text">đ</sup></span>';
     }
     
     return $html;

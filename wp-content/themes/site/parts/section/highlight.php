@@ -48,7 +48,7 @@ $sliderChunk = [
 				<div class="carousel-item <?php echo $k == 0 ? 'active' : ''; ?>">
 					<?php foreach ($v as $item): ?>
 						<div class="item">
-							<img src="<?= $item['link'] ?>" alt="<?= $item['name'] ?>" loading="lazy"/>
+							<img src="<?= $item['link'] ?>" alt="<?= is_array($item['name']) ? $item['name'][0] : $item['name'] ?>" loading="lazy"/>
 							<p class="item-name">
 								<?php if (is_array($item['name'])): ?>
 									<?php foreach ($item['name'] as $k => $item_value): ?>

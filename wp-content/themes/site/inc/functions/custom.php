@@ -762,3 +762,66 @@ function getBrandsByCat($cat, $childCat = null, $price = null) {
 
 	return $wpdb->get_results($sql);
 }
+
+function saveSearchHistory($keyword) {
+	if (empty($keyword)) return false;
+
+	global $wpdb;
+
+    if (is_user_logged_in()) {
+		$isGuest = 0;
+        $user_id = get_current_user_id();
+    } else {
+		$isGuest = 1;
+
+        if (!isset($_COOKIE['guest_user_id'])) {
+            $user_id = intval(rand(100000, 999999));
+            setcookie('guest_user_id', $user_id, time() + (30 * DAY_IN_SECONDS), COOKIEPATH, COOKIE_DOMAIN);
+        }
+		else {
+            $user_id = $_COOKIE['guest_user_id'];
+        }
+    }
+
+	// Save search history
+	$wpdb->insert(
+		$wpdb->prefix . 'search_history',
+		array(
+			'keyword' => $keyword,
+			'user_id' => $user_id,
+			'is_guest' => $isGuest
+		)
+	);
+}
+
+function kiotVietOrderId($orderId) {
+	if (!empty($orderId)) {
+		global $wpdb;
+
+		$table = $wpdb->prefix."kiotviet_sync_orders";
+		$sql = "SELECT data_raw FROM $table WHERE order_id = '$orderId'";
+		$result = $wpdb->get_var($sql);
+
+		if (!empty($result)) {
+			$data_raw = json_decode($result, true);
+
+			return !empty($data_raw['code']) ? $data_raw['code'] : null;
+		}
+	}
+
+	return null;
+}
+
+function getOrderIdByKiotVietOrder($kiotVietOrder) {
+	if (!empty($kiotVietOrder)) {
+		global $wpdb;
+
+		$table = $wpdb->prefix."kiotviet_sync_orders";
+		$sql = "SELECT order_id FROM $table WHERE JSON_EXTRACT(data_raw, '$.code') = '$kiotVietOrder'";
+		$result = $wpdb->get_var($sql);
+
+		return !empty($result) ? $result : null;
+	}
+
+	return null;
+}

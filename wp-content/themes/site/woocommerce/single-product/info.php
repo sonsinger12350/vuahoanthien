@@ -260,6 +260,12 @@ switch ($loai_sp) {
   case "bot_tret":   
     $specs_sp = get_field("bot_tret_specs");
     break;
+  case "chong_tham":   
+    $specs_sp = get_field("chong_tham_specs");
+    break;	
+  case "son_san":   
+    $specs_sp = get_field("son_san_specs");
+    break;
 	
   default:
     $specs_sp = "";  

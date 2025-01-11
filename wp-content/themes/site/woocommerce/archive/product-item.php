@@ -94,10 +94,10 @@ $current_user_count = $user_count ? YITH_WCWL_Wishlist_Factory::get_times_curren
         <div class="product-price-left">
           <?php if ($product_price_sale>0): ?>
             <p><small><del><?php echo $product_price; ?><sup class="text">đ</sup></del></small></p>
-            <p><b class="me-1 text-danger"><?php echo $product_price_sale; ?><sup class="text-danger text">đ</sup></b></p>
+            <p><b class="me-1 text-danger"><?php echo $product_price_sale; ?><sup class="text">đ</sup></b></p>
           <?php else: ?>
             <p><small>&nbsp;</small></p>
-            <p><b class="me-1 text-danger"><?php echo $product_price; ?><sup class="text-danger text">đ</sup></b></p>
+            <p><b class="me-1 text-danger"><?php echo $product_price; ?><sup class="text">đ</sup></b></p>
           <?php endif ?>
           
         </div>

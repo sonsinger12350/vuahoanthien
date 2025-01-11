@@ -238,7 +238,7 @@
 
 				foreach ($taxLv2 as $v) {
 					if (!in_array($v->parent, $catRoots)) $cat_lv1[] = $v->parent;
-					else if (in_array($v->parent, $catRoots)) $cat_lv1[] = $v->term_id;
+					else if (in_array($v->parent, $catRoots)) $cat_lv1[] = $v->term_taxonomy_id;
 				}
 
 				return get_terms(['include' => $cat_lv1]);
