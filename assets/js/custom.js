@@ -182,9 +182,19 @@ window.addEventListener("load", function() {
             $('#compareFooter').addClass('d-none').find('.number').text(0);
         });
 
-
         $('.search-btn-item').on('click',function(e){
             e.preventDefault();
+
+            if ($('[data-bs-target="#profileNav"]').attr('aria-expanded')) {
+                $('#profileNav').collapse('hide');
+                $('[data-bs-target="#profileNav"]').addClass('collapsed');
+            }
+
+            if ($('#mainMenu').hasClass('show')) {
+                $('#btnMenu').click();
+		        $('body').removeClass('nav-open');
+            }
+
             $(this).toggleClass('active');
             body.addClass('searchbox-opening');
             $('.search-box form').toggleClass('active').slideToggle();
@@ -471,7 +481,7 @@ window.addEventListener("load", function() {
                 popup_loading();
 
                 $.post( '/?wc-ajax=checkout', $(f).serialize(), function( res ) {
-                    // console.log('res', res);
+                    console.log('res', res);
 
                     popup_loading('hide');
                     
@@ -481,7 +491,7 @@ window.addEventListener("load", function() {
                         popup_message( res.messages );
                     } else {
                         $('#modal-check-thanks').each(function(){
-                            $('.order_id', this).html( '#' + res.order_id );
+                            $('.order_id', this).html( '#' + res.kiotViet_order_id );
                         }).on('click', function(){
                             if( typeof site_setting.home_url == 'string' ) {
                                 location.href = site_setting.home_url;
@@ -861,10 +871,6 @@ window.addEventListener("load", function() {
             } else {
                 $('.row-need-amount .line-1').removeClass('d-none');
             }
-            //current_coupon_archived_desc = $('.minimum-amount.current-coupon').text();
-            //console.log(current_coupon_archived_desc);
-            //console.log(has_coupon);
-            //console.log(need_amount);
 
             if( has_coupon ) {
                 // $('.cart_coupon_warning').html('Chúc mừng bạn đã đạt điều kiện sử dụng khuyến mãi <b style="text-transform: uppercase;">'+current_coupon_archived_code+'</b> là ' + current_coupon_archived_desc + ' <b>Vui lòng nhấn chọn mã khuyến mãi để sử dụng</b>').show();
@@ -1683,7 +1689,16 @@ window.addEventListener("load", function() {
                     coupon
                 },
                 success: function(response) {
-                    if (response.success) location.reload();
+                    if (response.success) {
+                        if (window.location.href.indexOf('?') > -1) {
+                            let cleanUrl = window.location.href.split('?')[0];
+
+                            window.location.href = cleanUrl;
+                        }
+                        else {
+                            location.reload();
+                        }
+                    }
                 }
             });
         }
@@ -1789,6 +1804,63 @@ window.addEventListener("load", function() {
             
             form.find('.show-tab-newlist.active').removeClass('active');
         }, 200);
+    });
+
+    $(document).ready(function() {
+        let debounceSearch;
+
+        $('body').on('input', '.dgwt-wcas-search-input', function() {
+            clearTimeout(debounceSearch);
+
+            debounceSearch = setTimeout(function() {
+                let keyword = jQuery('.dgwt-wcas-search-input').val();
+
+                if (keyword.length > 0) {
+                    if ($('#custom-search-history').hasClass('show')) $('#custom-search-history').removeClass('show');
+
+                    jQuery.ajax({
+                        url: woocommerce_params.ajax_url,
+                        method: 'POST',
+                        data: { 
+                            action: "save_search_history",
+                            keyword: keyword
+                        }
+                    });
+                }
+            }, 1500);
+        });
+    });
+
+    $('body').on('click', '.dgwt-wcas-search-input', function(e) {
+        e.stopPropagation();
+        if ($('#custom-search-history').hasClass('show')) return false;
+
+        $('#custom-search-history .list').html('<div class="loaderbox s"><div id="loader"></div><img src="/assets/images/icons/icon-Logo.png" class="img-fluid w-80" title="Vua Hoàn Thiện"></div>');
+        $('#custom-search-history').addClass('show');
+
+        $.ajax({
+            url: woocommerce_params.ajax_url,
+            type: "GET",
+            data: {
+                action: "get_search_history"
+            },
+            success: function(response) {
+                if (response.success && response.data) {
+                    $('#custom-search-history .list').html(response.data);
+                }
+                else {
+                    $('#custom-search-history .list').html('');
+                }
+            }
+        });
+    });
+
+    $(document).on('click scroll', function (event) {
+        let popup = $('#custom-search-history');
+
+        if (popup.hasClass('show') && !popup.is(event.target) && popup.has(event.target).length === 0) {
+            popup.removeClass('show');
+        }
     });
 })(jQuery);
 

@@ -23,6 +23,19 @@
 //     <a class="btn btn-outline-primary d-block">Find Others Stores</a>
 //   </div>
 // `
+function closeSearchForm() {
+	if ($('.search-btn-item').hasClass('active')) {
+		$('.search-btn-item').click();
+	}
+}
+
+function closeMenu() {
+	if ($('#mainMenu').hasClass('show')) {
+		$('#btnMenu').click();
+		$('body').removeClass('nav-open');
+	}
+}
+
 $(document).ready(function () {
 	$('.scroll-to').on('click', function (e) {
 		e.preventDefault();
@@ -108,6 +121,8 @@ $(document).ready(function () {
 		});
 
 		$btnMenu.on('click', function (e) {
+			closeSearchForm();
+
 			const target = $(this).data('bs-target')
 				, targetTopPosition = document.getElementById(target.replace('#', '')).getBoundingClientRect().top;
 
@@ -128,9 +143,7 @@ $(document).ready(function () {
 	}
 
 	$('body').on('click', '[data-bs-target="#profileNav"]', function() {
-        if ($('#mainMenu').hasClass('show')) {
-            $('#btnMenu').click();
-			$('body').removeClass('nav-open');
-        }
+		closeSearchForm();
+		closeMenu();
     });
 });
