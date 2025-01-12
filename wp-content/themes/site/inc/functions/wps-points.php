@@ -1,18 +1,31 @@
 <?php
 
-function site_wps_remove_coupon_after_checkout( $order_id = 0, $posted_data = array(), $order = false )
-{
+add_action('woocommerce_new_order', 'site_wc_handle_new_order', 10, 1);
+
+function site_wc_handle_new_order($order_id) {
     $cart_discount = __( 'Cart Discount', 'points-and-rewards-for-woocommerce' );
     $my_coupons = WC()->cart->get_coupons();
-    
+    $used_points = WC()->session->get('wps_cart_points_original');
+
+    if (!empty($used_points)) {
+        $current_user_id = get_current_user_id();
+        $current_points = (int) get_user_meta( $current_user_id, 'wps_wpr_points', true );
+        $new_points = max( 0, $current_points - $used_points );
+
+        // Update new point
+        update_user_meta( $current_user_id, 'wps_wpr_points', $new_points );
+        update_post_meta( $order_id, 'points_used', $used_points );
+    }
+
+    WC()->session->__unset( 'wps_cart_points' );
+    WC()->session->__unset( 'wps_cart_points_original' );
+
     foreach ( $my_coupons as $code => $coupon ){
         if( strtolower($code) == strtolower($cart_discount) ) {
             WC()->cart->remove_coupon( $code );
-            WC()->session->__unset( 'wps_cart_points' );
         }
     }
 }
-add_action('woocommerce_checkout_order_processed', 'site_wps_remove_coupon_after_checkout', 10, 3 );
 
 function site_wps_round_down_cart_total_value( $points_calculation, $order_total, $wps_wpr_coupon_conversion_points, $wps_wpr_coupon_conversion_price )
 {

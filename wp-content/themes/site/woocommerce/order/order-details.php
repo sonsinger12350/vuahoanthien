@@ -82,6 +82,15 @@ if ( $show_downloads ) {
 
 			// Change position
 			$data = $order->get_order_item_totals();
+			$discount_total = $order->discount_total;
+			
+			if (!empty($order->get_items( 'fee' ))) {
+				foreach ($order->get_items( 'fee' ) as $v) {
+					if ($v->get_name() == 'điểm') {
+						$discount_total += $v->get_total();
+					}
+				}
+			}
 
 			$list = array(
 				'discount' => 'Khuyến mãi',
@@ -90,9 +99,11 @@ if ( $show_downloads ) {
 				'order_total' => 'Tổng cộng',
 				'payment_method' => 'Phương thức thanh toán', 
 			);
+			$point = 0;
 
 			foreach ( $data as $key => $value ) {
 				if (strpos($key, 'fee') !== false) {
+					if ($value['label'] == 'điểm:') $point = $value['value'];
 					$shipLabel = $list['shipping'];
 					$shipValue = $data['shipping']['value'];
 					unset($data['shipping']);
@@ -109,17 +120,19 @@ if ( $show_downloads ) {
 					$total = $value['value'];
 					$label = $list[$key];
 				}
+
+				if ($key == 'discount') $total = '-'.wc_price($discount_total);
 			?>
-				<tr row-<?php echo $key?>>
-					<th scope="row"><?php echo esc_html( $label ); ?></th>
-					<td><?php echo ( 'payment_method' === $key ) ? esc_html( $total ) : wp_kses_post( $total ); ?></td>
-				</tr>
-				<?php if (strpos($key, 'fee') !== false): ?>
+				<?php if (strpos($key, 'payment_method') !== false): ?>
 					<tr row-shipping>
 						<th scope="row"><?php echo esc_html( $shipLabel ); ?></th>
 						<td><?php echo wp_kses_post( $shipValue ) ?></td>
 					</tr>
 				<?php endif ?>
+				<tr row-<?php echo $key?>>
+					<th scope="row"><?php echo esc_html( $label ); ?></th>
+					<td><?php echo ( 'payment_method' === $key ) ? esc_html( $total ) : wp_kses_post( $total ); ?></td>
+				</tr>
 				<?php
 			}
 			?>

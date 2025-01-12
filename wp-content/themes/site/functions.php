@@ -883,6 +883,8 @@ add_action('woocommerce_cart_loaded_from_session', 'custom_override_coupon_valid
 
 // Check coupon before apply
 function custom_check_coupon_validity( $valid, $coupon ) {
+	if ($coupon->code == 'điểm') return true;
+
 	$mygift = site_get_my_gift(get_current_user_ID());
 
     if (!empty($mygift[$coupon->code])) {
@@ -1238,4 +1240,44 @@ add_action('widgets_init', 'replace_wc_price_filter_widget');
 function replace_wc_price_filter_widget() {
     unregister_widget('WC_Widget_Price_Filter');
     register_widget('Custom_WC_Widget_Price_Filter');
+}
+
+// add_action('woocommerce_before_calculate_totals', function ($cart) {
+    // if (is_admin() && !defined('DOING_AJAX')) return;
+
+    // $wps_cart_points = WC()->session->get('wps_cart_points');
+
+    // if (empty($wps_cart_points) || $wps_cart_points <= 0) return;
+
+    // if ($wps_cart_points > $cart->subtotal) $wps_cart_points = $cart->subtotal;
+
+    // $coupon_totals = $cart->get_coupon_discount_totals();
+    // $coupon_code = 'điểm';
+
+    // if (isset($coupon_totals[$coupon_code])) {
+    //     $coupon_totals[$coupon_code] = $wps_cart_points;
+    //     $cart->set_coupon_discount_totals($coupon_totals);
+    // }
+// });
+
+// add_action('template_redirect', 'restore_custom_cart_points_from_session');
+
+// function restore_custom_cart_points_from_session() {
+//     if (is_cart() && WC()->session->get('wps_cart_points')) {
+//         $custom_points = WC()->session->get('wps_cart_points');
+        
+//         // Kiểm tra và thiết lập lại điểm trong session nếu cần.
+//         WC()->cart->set_discount_total($custom_points);
+//     }
+// }
+
+add_action('woocommerce_cart_calculate_fees', 'adjust_cart_points', 10, 1);
+
+function adjust_cart_points($cart) {
+    if (WC()->session->get('wps_cart_points')) {
+        $custom_points = WC()->session->get('wps_cart_points');
+        
+        // Set lại số điểm trong giỏ hàng.
+        $cart->add_fee(__('điểm', 'woocommerce'), -$custom_points);
+    }
 }

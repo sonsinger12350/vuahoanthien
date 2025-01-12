@@ -33,12 +33,13 @@ if ( wc_tax_enabled() ) {
 	$show_tax_columns = count( $order_taxes ) === 1;
 }
 // Automattic\WooCommerce\Admin\Overrides\Order::get_fee()
-$listFee = $order->get_items( 'fee' );
-$feeTitle = '';
+$discountAdditional = 0;
+$total_discount = $order->get_total_discount();
 
-if (!empty($listFee)) {
-	$feeTitle = $listFee[key($listFee)]->get_name();
+foreach ($line_items_fee as $v) {
+	if ($v->get_name() == 'điểm') $total_discount += $v->get_total();
 }
+
 ?>
 <div class="woocommerce_order_items_wrapper wc-order-items-editable">
 	<table cellpadding="0" cellspacing="0" class="woocommerce_order_items">
@@ -179,19 +180,21 @@ if (!empty($listFee)) {
 				<td class="label"><?php esc_html_e( 'Coupon(s):', 'woocommerce' ); ?></td>
 				<td width="1%"></td>
 				<td class="total">-
-					<?php echo wc_price( $order->get_total_discount(), array( 'currency' => $order->get_currency() ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php echo wc_price( $total_discount, array( 'currency' => $order->get_currency() ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</td>
 			</tr>
 		<?php endif; ?>
-		<?php if ( !empty($order->get_total_fees()) ) : ?>
-			<tr>
-				<!-- <td class="label"><?php esc_html_e( 'Fees:', 'woocommerce' ); ?></td> -->
-				<td class="label"><?php esc_html_e( $feeTitle ); ?></td>
-				<td width="1%"></td>
-				<td class="total">
-					<?php echo wc_price( $order->get_total_fees(), array( 'currency' => $order->get_currency() ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				</td>
-			</tr>
+		<?php if ( !empty($line_items_fee) ) : ?>
+			<?php foreach ( $line_items_fee as $v ): ?>
+				<tr>
+					<!-- <td class="label"><?php esc_html_e( 'Fees:', 'woocommerce' ); ?></td> -->
+					<td class="label"><?php esc_html_e( $v->get_name() ); ?></td>
+					<td width="1%"></td>
+					<td class="total">
+						<?php echo wc_price( $v->get_total(), array( 'currency' => $order->get_currency() ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
 		<?php endif; ?>
 
 		<?php do_action( 'woocommerce_admin_order_totals_after_discount', $order->get_id() ); ?>

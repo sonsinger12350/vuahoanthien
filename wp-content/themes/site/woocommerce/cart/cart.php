@@ -25,7 +25,7 @@ defined('ABSPATH') || exit;
 
 do_action('woocommerce_before_cart');
 
-//global $cart_point_reward;
+global $cart_point_reward;
 $link = home_url();
 
 //$cat_hot_sale = site_get_hot_sale_home_page();
@@ -39,40 +39,24 @@ $cart_coupons = array();
 $cart_point_reward = array();
 $discount_coupons = array();
 
-//var_dump($my_coupons);
-
 // Get Point Discount
 $user_id = get_current_user_ID();
 $get_user_points = ($user_id) ? (int) get_user_meta($user_id, 'wps_wpr_points', true) : 0;
 
-
-
-
-// $cart_discount = getCurrentLanguageCode() == 'vi' ? 'Điểm' : 'Point';
+$cart_discount = getCurrentLanguageCode() == 'vi' ? 'Điểm' : 'Point';
 $my_coupons = WC()->cart->get_coupons();
-$cart_discount = strtolower(__( 'Cart Discount', 'points-and-rewards-for-woocommerce' ));
+// $cart_discount = strtolower(__( 'Cart Discount', 'points-and-rewards-for-woocommerce' ));
 
 foreach ($my_coupons as $code => $coupon) {
-	// get_product_ids();
-	// is_valid_for_product( $product );
-	//var_dump($code);
-	if (strtolower($code) == $cart_discount) {
-		$cart_point_reward[$cart_discount] = $coupon;
-		//$cart_coupons[$cart_discount] = $coupon;
-	} else if (count($coupon->get_meta_data()) > 0) {
-		$cart_coupons[$code] = $coupon;
-	} else {
-		$discount_coupons[$code] = $coupon;
-	}
+	if (strtolower($code) == $cart_discount) $cart_point_reward[$cart_discount] = $coupon;
+	else if (count($coupon->get_meta_data()) > 0) $cart_coupons[$code] = $coupon;
+	else $discount_coupons[$code] = $coupon;
 }
 
 //$cart_subtotal_redemption = get_option('cart_subtotal_redemption');
 
-//var_dump($cart_coupons);
-//var_dump($cart_point_reward);
-
 ?>
-<form class="cart-form" id="cart-form" action="<?php echo esc_url(wc_get_cart_url()); ?>" method="post"> <!--container-->
+<form class="cart-form woocommerce-cart-form" id="cart-form" action="<?php echo esc_url(wc_get_cart_url()); ?>" method="post"> <!--container-->
 	<div class="row">
 		<div class="col-12 col-lg-9 col-cart">
 			<div class="section-bg mb-3">
@@ -424,24 +408,24 @@ foreach ($my_coupons as $code => $coupon) {
 </form>
 
 <script type="text/javascript">
-	const removeCouponLink = document.getElementById('remove_point_coupon');
-	const inputElement = document.getElementById('wps_cart_points');
+	// const removeCouponLink = document.getElementById('remove_point_coupon');
+	// const inputElement = document.getElementById('wps_cart_points');
 	// const resultElement = document.getElementById('result');
 	// const remainPointElement = document.getElementById('point-remaining');
 	// console.log(wps_cart_points);
 
-	removeCouponLink.addEventListener('click', function(event) {
-		event.preventDefault();
+	// removeCouponLink.addEventListener('click', function(event) {
+	// 	event.preventDefault();
 
 
 		// Clear the value in localStorage
-		localStorage.setItem('wps_cart_points', 0);
-		localStorage.setItem('wps_cart_remain_points', 0);
+		// localStorage.setItem('wps_cart_points', 0);
+		// localStorage.setItem('wps_cart_remain_points', 0);
 		// Clear the displayed result
-		resultElement.textContent = '';
-		remainPointElement.textContent = '';
+		// resultElement.textContent = '';
+		// remainPointElement.textContent = '';
 		// Reset the input field
-	});
+	// });
 </script>
 
 <?php

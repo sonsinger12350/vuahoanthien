@@ -11,6 +11,7 @@
 
 $user_id = $user_ID;
 $show_log = false;
+$used_point = get_point_used_by_user($user_id);
 
 if ( isset( $user_id ) && null != $user_id && is_numeric( $user_id ) ) {
 	$point_log    = get_user_meta( $user_id, 'points_details', true );
@@ -896,9 +897,19 @@ if ( isset( $user_id ) && null != $user_id && is_numeric( $user_id ) ) {
 			<table class="wps_wpr_total_points">
 				<tr>
 					<td><p class="label"><?php esc_html_e( 'Total Points', 'points-and-rewards-for-woocommerce' ); ?></p></td>
-					<td><p class="value"><?php echo esc_html( $total_points ); ?></p></td>
+					<td><p class="value fw-bold"><?php echo esc_html( $total_points + $used_point ); ?></p></td>
 					<td></td>
-				</tr>        
+				</tr>
+				<tr>
+					<td><p class="label">Điểm đã sử dụng:</p></td>
+					<td><p class="value fw-bold"><?php echo esc_html( $used_point ); ?></p></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><p class="label">Điểm khả dụng:</p></td>
+					<td><p class="value fw-bold"><?php echo esc_html( $total_points ); ?></p></td>
+					<td></td>
+				</tr>
 			</table>
 		</div>
 		<?php

@@ -1414,8 +1414,10 @@ function site_wc_product_sold_count( $product_id )
 function site_wc_checkout_order_processed( $order_id = 0, $posted_data = array(), $order = false )
 {
     $customer_id = (int) get_current_user_id();
+
     if( $customer_id > 0 ) {
         $address_name = sanitize_text_field( isset($_POST['address-name']) ? $_POST['address-name'] : '' );
+
         if( $address_name!='' && preg_match('/^new/i', $address_name) ) {
             $new = (int) str_replace( 'new_', '', $address_name );
 
@@ -1423,10 +1425,8 @@ function site_wc_checkout_order_processed( $order_id = 0, $posted_data = array()
 
             $address = 'shipping_';
             
-            foreach( site_wc_get_address_fields() as $name )
-            {
+            foreach( site_wc_get_address_fields() as $name ) {
                 $value = sanitize_text_field( isset($_POST[$address . $name]) ? $_POST[$address . $name] : '' );
-                
                 update_user_meta($customer_id, $address . $new . '_' . $name,  $value);
             }
         }
@@ -1435,7 +1435,7 @@ function site_wc_checkout_order_processed( $order_id = 0, $posted_data = array()
     $billing_phone = sanitize_text_field( isset($_POST['billing_phone']) ? $_POST['billing_phone'] : '' );
 
     if( $billing_phone!='' ) {
-        site_sms_send( $billing_phone, '%23'.kiotVietOrderId($order_id) );
+        // site_sms_send( $billing_phone, '%23'.kiotVietOrderId($order_id) );
     }
 }
 add_action('woocommerce_checkout_order_processed', 'site_wc_checkout_order_processed', 10, 3 );
@@ -1572,3 +1572,21 @@ function add_og_image_meta_tag() {
     }
 }
 add_action('wp_head', 'add_og_image_meta_tag');
+
+function get_point_used_by_user($user_id) {
+    global $wpdb;
+
+    $order_ids = $wpdb->get_var("SELECT GROUP_CONCAT(DISTINCT post_id) 
+        FROM {$wpdb->prefix}postmeta
+        WHERE meta_key = '_customer_user' AND meta_value = $user_id
+    ");
+
+    if (empty($order_ids)) return 0;
+
+    $points_used = $wpdb->get_var("SELECT SUM(meta_value)
+        FROM {$wpdb->prefix}postmeta
+        WHERE meta_key = 'points_used' AND post_id IN ($order_ids)
+    ");
+
+    return $points_used;
+}

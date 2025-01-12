@@ -1798,6 +1798,7 @@ class Points_Rewards_For_WooCommerce_Public {
 			// Get data via ajax.
 			$user_id         = ! empty( $_POST['user_id'] ) ? sanitize_text_field( wp_unslash( $_POST['user_id'] ) ) : 0;
 			$wps_cart_points = ! empty( $_POST['wps_cart_points'] ) ? sanitize_text_field( wp_unslash( $_POST['wps_cart_points'] ) ) : 0;
+			$wps_cart_points_original = $wps_cart_points;
 			$get_points      = get_user_meta( get_current_user_id(), 'wps_wpr_points', true );
 			$get_points      = ! empty( $get_points ) && $get_points > 0 ? $get_points : 0;
 
@@ -1896,9 +1897,9 @@ class Points_Rewards_For_WooCommerce_Public {
 
 			// Applied points here.
 			if ( $get_points > 0 && $wps_cart_points > 0 ) {
-				if ( $get_points >= $wps_cart_points ) {
-
+				if ( $get_points >= $wps_cart_points_original ) {
 					WC()->session->set( 'wps_cart_points', $wps_cart_points );
+					WC()->session->set( 'wps_cart_points_original', $wps_cart_points_original );
 					$response['result']  = true;
 					$response['message'] = esc_html__( 'Custom Point has been applied Successfully!', 'points-and-rewards-for-woocommerce' );
 				} else {
@@ -2305,7 +2306,7 @@ class Points_Rewards_For_WooCommerce_Public {
 	 * @return void
 	 */
 	public function wps_wpr_woocommerce_checkout_update_order_meta( $order_data ) {
-
+		echo '<pre>';print_r($order_data);exit;
 		// This function is triggered by two hooks, so we need to verify whether the parameter is an ID or an object.
 		if ( ! is_object( $order_data ) ) {
 			$order = wc_get_order( $order_data );
@@ -4067,7 +4068,7 @@ class Points_Rewards_For_WooCommerce_Public {
 	 * @return void
 	 */
 	public function wps_wpr_unset_points_session_while_points_negative() {
-
+		return true;
 		if ( is_user_logged_in() ) {
 
 			$exist_points = (int) get_user_meta( get_current_user_id(), 'wps_wpr_points', true );

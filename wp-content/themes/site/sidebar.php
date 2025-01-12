@@ -634,7 +634,7 @@
 										<?php endif; ?>
 									</ul>
 									<div class="explore-more-action">
-										<a class="btn btn-outline-primary p-0 border-2 rounded fw-bold btn-viewmore mb-2" data-bs-toggle="collapse" href="#detailMoreCate" role="button" aria-expanded="false" aria-controls="detailMoreCate">
+										<a class="btn btn-outline-primary p-0 border-2 rounded fw-bold btn-viewmore mb-2 w-100" data-bs-toggle="collapse" href="#detailMoreCate" role="button" aria-expanded="false" aria-controls="detailMoreCate">
 											<span class="text-1">Xem thêm</span>
 											<span class="text-2">Rút gọn</span>
 										</a>
