@@ -231,14 +231,25 @@
 				";
 
 				$taxLv2 = $wpdb->get_results($sql);
+
 				if (empty($taxLv2)) return [];
-				$catRoots = $wpdb->get_var("SELECT GROUP_CONCAT(term_id) FROM vhd_term_taxonomy WHERE taxonomy = 'product_cat' AND parent = 0 ");
-				$catRoots = explode(',', $catRoots);
+				$cat_roots = $wpdb->get_var("SELECT GROUP_CONCAT(term_id) FROM vhd_term_taxonomy WHERE taxonomy = 'product_cat' AND parent = 0 ");
+				$cat_roots = explode(',', $cat_roots);
 				$cat_lv1 = [];
 
 				foreach ($taxLv2 as $v) {
-					if (!in_array($v->parent, $catRoots)) $cat_lv1[] = $v->parent;
-					else if (in_array($v->parent, $catRoots)) $cat_lv1[] = $v->term_taxonomy_id;
+					if (!in_array($v->parent, $cat_roots)) $cat_lv1[] = $v->parent;
+					else if (in_array($v->parent, $cat_roots)) $cat_lv1[] = $v->term_taxonomy_id;
+				}
+
+				if ($level == 2) {
+					$cat_lv2 = [];
+
+					foreach ($taxLv2 as $v) {
+						if (!in_array($v->parent, $cat_roots) && in_array($v->parent, $cat_lv1)) $cat_lv2[] = $v->term_taxonomy_id;
+					}
+
+					$cat_lv1 = $cat_lv2;
 				}
 
 				return get_terms(['include' => $cat_lv1]);
@@ -342,25 +353,38 @@
 	}
 
 	function fetch_terms_by_keywords() {
-		global $wpdb;
-		$keyword = $_GET['s'];
-		$sql = "SELECT GROUP_CONCAT(DISTINCT vhd_posts.ID)
-			FROM vhd_posts
-			LEFT JOIN vhd_postmeta ON (vhd_posts.ID = vhd_postmeta.post_id)
-			INNER JOIN vhd_term_relationships ON (vhd_posts.ID = vhd_term_relationships.object_id )
-			WHERE vhd_posts.post_type = 'product' 
-			AND vhd_posts.post_status = 'publish'
-			AND vhd_postmeta.meta_key = '_sale_price' 
-			AND CAST(vhd_postmeta.meta_value AS SIGNED) > 0 AND 
-			(vhd_posts.post_content LIKE '%$keyword%' OR vhd_posts.post_title LIKE '%$keyword%')
-		";
-		$product_ids = $wpdb->get_var($sql);
+		// global $wpdb;
+		// $keyword = $_GET['s'];
+		// $sql = "SELECT GROUP_CONCAT(DISTINCT vhd_posts.ID)
+		// 	FROM vhd_posts
+		// 	LEFT JOIN vhd_postmeta ON (vhd_posts.ID = vhd_postmeta.post_id)
+		// 	INNER JOIN vhd_term_relationships ON (vhd_posts.ID = vhd_term_relationships.object_id )
+		// 	WHERE vhd_posts.post_type = 'product' 
+		// 	AND vhd_posts.post_status = 'publish'
+		// 	AND vhd_postmeta.meta_key = '_sale_price' 
+		// 	AND CAST(vhd_postmeta.meta_value AS SIGNED) > 0 AND 
+		// 	(vhd_posts.post_content LIKE '%$keyword%' OR vhd_posts.post_title LIKE '%$keyword%')
+		// ";
+		// $product_ids = $wpdb->get_var($sql);
+
+		global $wp_query, $wpdb;
+
+		$results = $wpdb->get_results($wp_query->request);
+		$product_ids = [];
+
+		if (empty($results)) return [];
+
+		foreach ($results as $v) {
+			$product_ids[] = $v->ID;
+		}
+
+		$product_ids = implode(',', $product_ids);
 		
 		if (empty($product_ids)) return [];
-		$sql = "SELECT GROUP_CONCAT(DISTINCT vhd_terms.term_id)
-			FROM vhd_terms
-			JOIN vhd_term_taxonomy ON (vhd_term_taxonomy.term_id = vhd_terms.term_id)
-			WHERE vhd_terms.name LIKE '%$keyword%' AND vhd_term_taxonomy.taxonomy = 'product_cat'
+		$sql = "SELECT GROUP_CONCAT(DISTINCT vhd_term_taxonomy.term_id)
+			FROM vhd_term_taxonomy
+			JOIN vhd_term_relationships ON (vhd_term_taxonomy.term_taxonomy_id = vhd_term_relationships.term_taxonomy_id )
+			WHERE vhd_term_relationships.object_id  IN ($product_ids) AND vhd_term_taxonomy.taxonomy = 'product_cat'
 		";
 		$allCategories = $wpdb->get_var($sql);
 		$exclude_ids = [100, 15, 23, 137];
@@ -634,7 +658,7 @@
 										<?php endif; ?>
 									</ul>
 									<div class="explore-more-action">
-										<a class="btn btn-outline-primary p-0 border-2 rounded fw-bold btn-viewmore mb-2 w-100" data-bs-toggle="collapse" href="#detailMoreCate" role="button" aria-expanded="false" aria-controls="detailMoreCate">
+										<a class="btn btn-outline-primary p-0 border-2 rounded fw-bold btn-viewmore mb-2" data-bs-toggle="collapse" href="#detailMoreCate" role="button" aria-expanded="false" aria-controls="detailMoreCate">
 											<span class="text-1">Xem thêm</span>
 											<span class="text-2">Rút gọn</span>
 										</a>

@@ -1435,7 +1435,7 @@ function site_wc_checkout_order_processed( $order_id = 0, $posted_data = array()
     $billing_phone = sanitize_text_field( isset($_POST['billing_phone']) ? $_POST['billing_phone'] : '' );
 
     if( $billing_phone!='' ) {
-        // site_sms_send( $billing_phone, '%23'.kiotVietOrderId($order_id) );
+        site_sms_send( $billing_phone, '%23'.kiotVietOrderId($order_id) );
     }
 }
 add_action('woocommerce_checkout_order_processed', 'site_wc_checkout_order_processed', 10, 3 );
@@ -1588,5 +1588,5 @@ function get_point_used_by_user($user_id) {
         WHERE meta_key = 'points_used' AND post_id IN ($order_ids)
     ");
 
-    return $points_used;
+    return $points_used ?? 0;
 }

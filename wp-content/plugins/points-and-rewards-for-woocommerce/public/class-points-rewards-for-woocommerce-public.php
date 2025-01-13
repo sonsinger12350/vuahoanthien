@@ -2306,7 +2306,6 @@ class Points_Rewards_For_WooCommerce_Public {
 	 * @return void
 	 */
 	public function wps_wpr_woocommerce_checkout_update_order_meta( $order_data ) {
-		echo '<pre>';print_r($order_data);exit;
 		// This function is triggered by two hooks, so we need to verify whether the parameter is an ID or an object.
 		if ( ! is_object( $order_data ) ) {
 			$order = wc_get_order( $order_data );

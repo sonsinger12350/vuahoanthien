@@ -1271,13 +1271,13 @@ function replace_wc_price_filter_widget() {
 //     }
 // }
 
-add_action('woocommerce_cart_calculate_fees', 'adjust_cart_points', 10, 1);
+// add_action('woocommerce_cart_calculate_fees', 'adjust_cart_points', 10, 1);
 
-function adjust_cart_points($cart) {
-    if (WC()->session->get('wps_cart_points')) {
-        $custom_points = WC()->session->get('wps_cart_points');
+// function adjust_cart_points($cart) {
+//     if (WC()->session->get('wps_cart_points')) {
+//         $custom_points = WC()->session->get('wps_cart_points');
         
-        // Set lại số điểm trong giỏ hàng.
-        $cart->add_fee(__('điểm', 'woocommerce'), -$custom_points);
-    }
-}
+//         // Set lại số điểm trong giỏ hàng.
+//         $cart->add_fee(__('điểm', 'woocommerce'), -$custom_points);
+//     }
+// }

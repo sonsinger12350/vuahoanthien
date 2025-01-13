@@ -14,7 +14,7 @@ $product_link = $product ? admin_url( 'post.php?post=' . $item->get_product_id()
 $thumbnail    = $product ? apply_filters( 'woocommerce_admin_order_item_thumbnail', $product->get_image( 'thumbnail', array( 'title' => '' ), false ), $item_id, $item ) : '';
 $row_class    = apply_filters( 'woocommerce_admin_html_order_item_class', ! empty( $class ) ? $class : '', $item, $order );
 $coupon = $item->get_subtotal() - $item->get_total();
-echo '<pre>';print_r(123);exit;
+
 ?>
 <tr class="item <?php echo esc_attr( $row_class ); ?>" data-order_item_id="<?php echo esc_attr( $item_id ); ?>">
 	<td class="thumb">
