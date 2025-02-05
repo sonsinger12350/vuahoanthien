@@ -377,7 +377,7 @@ if( $user->ID>0 ) {
                       $src = wp_get_attachment_image_url( get_field('image', $brand->taxonomy . '_' . $brand->term_id ), 'full' );
                     ?>
                     <div class="col-4 col-lg-2 py-lg-2 nav-brand-item nav-brand-<?php echo $brand->term_id;?>">
-                      <a href="<?php echo site_shop_search( array( 'brands[]' => $brand->term_id ) );?>" class="border">
+                      <a href="<?php echo site_shop_search( array( 'thuong-hieu[]' => $brand->term_id ) );?>" class="border">
                         <img class="img-fluid m-h-30-px" src="<?php echo $src;?>" alt="<?php echo $brand->name;?>" loading="lazy"/>
                       </a>
                     </div>

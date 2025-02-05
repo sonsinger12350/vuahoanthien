@@ -74,7 +74,7 @@ $social_items = (array) get_field('social_items', $page_on_front);
           foreach( $terms as $i => $item ): 
             $key = $tax . '_' . $item->term_id;
             $image = get_field('image', $key);
-            $link = home_url('/shop/') . '?brands[]=' . $item->term_id;
+            $link = home_url('/shop/') . '?thuong-hieu[]=' . $item->term_id;
         ?>
         <a href="<?php echo $link; //the_field( 'link', $key );?>" title="<?php echo $item->name;?>">
           <img src="<?php echo wp_get_attachment_image_url( $image, 'full' );?>" alt="<?php echo $item->name;?>" loading="lazy"/>

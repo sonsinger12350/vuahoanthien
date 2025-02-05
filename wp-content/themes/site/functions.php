@@ -388,10 +388,10 @@ add_filter( 'woocommerce_layered_nav_link', 'remove_duplicate_cats_from_url', 10
 function remove_duplicate_cats_from_url( $link, $term_slug ) {
     $link_parts = parse_url( $link );
     parse_str( $link_parts['query'], $query_args );
-    if ( isset( $query_args['cats'] ) && is_array( $query_args['cats'] ) ) {
-        $selected_cats = array_unique( $query_args['cats'] );
+    if ( isset( $query_args['danh-muc'] ) && is_array( $query_args['danh-muc'] ) ) {
+        $selected_cats = array_unique( $query_args['danh-muc'] );
         $selected_cats_str = implode( ',', $selected_cats );
-        $query_args['cats'] = $selected_cats_str;
+        $query_args['danh-muc'] = $selected_cats_str;
         $link = esc_url_raw( add_query_arg( $query_args, $link_parts['path'] ) );
     }
     return $link;

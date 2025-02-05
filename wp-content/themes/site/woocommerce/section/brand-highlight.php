@@ -21,7 +21,7 @@
 					foreach ($list_brands as $item):
 						if ($i++ > 20) break;
 						$image = get_field('image', $item->taxonomy . '_' . $item->term_id);
-						$link = get_term_link($cat->term_id, $cat->taxonomy) . '?brands[]=' . $item->term_id;
+						$link = get_term_link($cat->term_id, $cat->taxonomy) . '?thuong-hieu[]=' . $item->term_id;
 				?>
 					<div class="col-4 col-lg-2 py-2 brand-item">
 						<a href="<?php echo esc_url($link); //$url;

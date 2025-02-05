@@ -1,11 +1,11 @@
 <?php
 	function fetch_term_by_price($level = 0) {
-		$value_prices = site__get('prices', []);
+		$value_prices = site__get('khoang-gia', []);
 
 		if (empty($value_prices)) return [];
 		global $wpdb;
 
-		$value_brands = site__get('brands', []);
+		$value_brands = site__get('thuong-hieu', []);
 		$exclude_ids = [100, 15, 23, 137];
 		$priceArr = explode('-', $value_prices[0]);
 		$wherePrice = '';
@@ -139,8 +139,8 @@
 
 	function fetch_terms($level, $cat) {
 		global $wpdb;
-		$value_brands = site__get('brands', []);
-		$value_prices = site__get('prices', []);
+		$value_brands = site__get('thuong-hieu', []);
+		$value_prices = site__get('khoang-gia', []);
 		$parent_id = $cat->term_id;
 		$taxonomy = $cat->taxonomy;
 		$child_terms = get_term_children($cat->term_id, $cat->taxonomy);
@@ -337,8 +337,8 @@
 	}
 
 	function fetch_terms_by_brands() {
-		$value_prices = site__get('prices', []);
-		$value_brands = site__get('brands', []);
+		$value_prices = site__get('khoang-gia', []);
+		$value_brands = site__get('thuong-hieu', []);
 		if (empty($value_brands)) return false;
 		if (!empty($value_prices)) return fetch_term_by_price();
 
@@ -437,7 +437,7 @@
 
 	// Check if current URL has specific query parameters
 	function has_specific_query_params() {
-		$query_params = ['brands', 's']; // Add more if needed , 'min_price', 'max_price'     
+		$query_params = ['thuong-hieu', 's']; // Add more if needed , 'min_price', 'max_price'     
 		foreach ($query_params as $param) {
 			if (isset($_GET[$param])) {
 				return true;
@@ -476,12 +476,12 @@
 		'buy' => 'Bán chạy',
 	];
 
-	$value_prices = site__get('prices', []);
-	$value_brands = site__get('brands', []);
-	$value_cats   = site__get('cats', []);
+	$value_prices = site__get('khoang-gia', []);
+	$value_brands = site__get('thuong-hieu', []);
+	$value_cats   = site__get('danh-muc', []);
 	$value_types  = site__get('types', []);
 	$value_sort   = site__get('sort', '');
-	
+
 	$uri = explode('?', $_SERVER['REQUEST_URI']);
 	$cat = get_queried_object();
 	$kw = site__get('s', '');
@@ -520,7 +520,7 @@
 				$url_parts = wp_parse_url($current_url);
 				$query_params = [];
 				if (isset($url_parts['query'])) wp_parse_str($url_parts['query'], $query_params);
-				$query_params['brands'] = $value_brands;
+				$query_params['thuong-hieu'] = $value_brands;
 				$new_query = http_build_query($query_params);
 				$new_url = $url_parts['scheme'] . '://' . $url_parts['host'] . $url_parts['path'] . '?' . $new_query;
 				echo '<script type="text/javascript">
@@ -561,9 +561,9 @@
 					<input type="hidden" name="s" value="<?php echo htmlspecialchars($_GET['s']); ?>">
 					<input type="hidden" name="post_type" value="product">
 					<?php
-					$query_params = $_GET;
-					unset($query_params['brands'], $query_params['min_price'], $query_params['max_price']);
-					$action_url = $uri[0] . '?' . http_build_query($query_params) . '&';
+						$query_params = $_GET;
+						unset($query_params['thuong-hieu'], $query_params['min_price'], $query_params['max_price']);
+						$action_url = $uri[0] . '?' . http_build_query($query_params) . '&';
 					?>
 				<?php endif; ?>
 
@@ -579,14 +579,14 @@
 									?>
 										<li class="<?= $checked ?>">
 											<label class="custom-checkbox">
-												<input type="checkbox" name="brands[]" value="<?= $term->term_id; ?>" <?= $checked ?>>
+												<input type="checkbox" name="thuong-hieu[]" value="<?= $term->term_id; ?>" <?= $checked ?>>
 												<span class="custom-checkbox-field"><span class="checkbox-item"></span> <span class="field-name"><?= $term->name; ?></span></span>
 											</label>
 										</li>
 										<?php
 										// Add to sidebar_choose
 										if (in_array($term->term_id, $value_brands)) {
-											$sidebar_choose['brands[]=' . $term->term_id] = $term->name;
+											$sidebar_choose['thuong-hieu[]=' . $term->term_id] = $term->name;
 										}
 										?>
 									<?php endforeach; ?>
@@ -619,7 +619,7 @@
 														if (!empty($_GET)) {
 															// Loop through each query parameter in the $_GET array
 															foreach ($_GET as $key => $value) {
-																if ($key == 'cats') continue;
+																if ($key == 'danh-muc') continue;
 																// Check if the parameter is an array (e.g., brands[])
 																if (is_array($value)) {
 																	// Loop through the array and append each value individually
@@ -639,13 +639,13 @@
 														<a class="cate_link checkbox-link <?php echo $current_term_link == $category_link ? 'active' : ''; ?>" href="<?php echo $category_link; ?>"><?php echo $term->name; ?></a>
 													<?php else: ?>
 														<label class="custom-checkbox">
-															<input type="checkbox" name="cats[]" value="<?php echo $term->term_id; ?>" <?php echo in_array($term->term_id, $value_cats) ? 'checked' : ''; ?>>
+															<input type="checkbox" name="danh-muc[]" value="<?php echo $term->term_id; ?>" <?php echo in_array($term->term_id, $value_cats) ? 'checked' : ''; ?>>
 															<span class="custom-checkbox-field"><span class="checkbox-item"></span> <span class="field-name"><?php echo $term->name; ?></span></span>
 														</label>
 														<?php
 														// Add to sidebar_choose
 														if (in_array($term->term_id, $value_cats)) {
-															$sidebar_choose['cats[]=' . $term->term_id] = $term->name;
+															$sidebar_choose['danh-muc[]=' . $term->term_id] = $term->name;
 														}
 														?>
 													<?php endif; ?>
@@ -674,13 +674,13 @@
 							<?php foreach (site_wc_get_prices_static() as $value => $name): ?>
 								<li>
 									<label class="custom-checkbox">
-										<input type="checkbox" name="prices[]" value="<?= $value ?>" <?= in_array($value, $value_prices) ? 'checked' : ''; ?>>
+										<input type="checkbox" name="khoang-gia[]" value="<?= $value ?>" <?= in_array($value, $value_prices) ? 'checked' : ''; ?>>
 										<span class="custom-checkbox-field"><span class="checkbox-item"></span> <span class="field-name"><?= $name; ?></span></span>
 									</label>
 									<?php
 										// Add to sidebar_choose
 										if (in_array($value, $value_prices)) {
-											$sidebar_choose['prices[]=' . $value] = $name;
+											$sidebar_choose['khoang-gia[]=' . $value] = $name;
 										}
 									?>
 								</li>
@@ -723,13 +723,13 @@
 										<?php foreach ($brands as $term): ?>
 											<li>
 												<label class="custom-checkbox">
-													<input type="checkbox" name="brands[]" value="<?php echo $term->term_id; ?>" <?php echo in_array($term->term_id, $value_brands) ? 'checked' : ''; ?>>
+													<input type="checkbox" name="thuong-hieu[]" value="<?php echo $term->term_id; ?>" <?php echo in_array($term->term_id, $value_brands) ? 'checked' : ''; ?>>
 													<span class="custom-checkbox-field"><span class="checkbox-item"></span> <span class="field-name"><?php echo $term->name; ?></span></span>
 												</label>
 												<?php
 												// Add to sidebar_choose
 												if (in_array($term->term_id, $value_brands)) {
-													$sidebar_choose['brands[]=' . $term->term_id] = $term->name;
+													$sidebar_choose['thuong-hieu[]=' . $term->term_id] = $term->name;
 												}
 												?>
 											</li>
@@ -768,13 +768,13 @@
 														<a class="cate_link checkbox-link <?php echo $current_term_link == $category_link ? 'active' : ''; ?>" href="<?php echo $category_link; ?>"><?php echo $term->name; ?></a>
 													<?php else: ?>
 														<label class="custom-checkbox">
-															<input type="checkbox" name="cats[]" value="<?php echo $term->term_id; ?>" <?php echo in_array($term->term_id, $value_cats) ? 'checked' : ''; ?>>
+															<input type="checkbox" name="danh-muc[]" value="<?php echo $term->term_id; ?>" <?php echo in_array($term->term_id, $value_cats) ? 'checked' : ''; ?>>
 															<span class="custom-checkbox-field"><span class="checkbox-item"></span> <span class="field-name"><?php echo $term->name; ?></span></span>
 														</label>
 														<?php
 														// Add to sidebar_choose
 														if (in_array($term->term_id, $value_cats)) {
-															$sidebar_choose['cats[]=' . $term->term_id] = $term->name;
+															$sidebar_choose['danh-muc[]=' . $term->term_id] = $term->name;
 														}
 														?>
 													<?php endif; ?>
@@ -795,13 +795,13 @@
 									<?php foreach (site_wc_get_prices_static() as $value => $name): ?>
 										<li>
 											<label class="custom-checkbox">
-												<input type="checkbox" name="prices[]" value="<?php echo $value; ?>" <?= in_array($value, $value_prices) ? 'checked' : ''; ?>>
+												<input type="checkbox" name="khoang-gia[]" value="<?php echo $value; ?>" <?= in_array($value, $value_prices) ? 'checked' : ''; ?>>
 												<span class="custom-checkbox-field"><span class="checkbox-item"></span> <span class="field-name"><?php echo $name; ?></span></span>
 											</label>
 											<?php
 												// Add to sidebar_choose
 												if (in_array($value, $value_prices)) {
-													$sidebar_choose['prices[]=' . $value] = $name;
+													$sidebar_choose['khoang-gia[]=' . $value] = $name;
 												}
 											?>
 										</li>

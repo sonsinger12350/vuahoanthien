@@ -41,7 +41,7 @@
 				</div>
 				<?php if (isset($categories[0])): ?>
 					<div class="section-actions text-center mt-3">
-						<a href="<?php echo get_permalink(wc_get_page_id('shop')); ?>?brands[]=<?php echo $brands[0]->term_id; ?>" class="btn btn-lg py-1 px-5 fw-bold btn-primary rounded">Xem thêm sản phẩm</a>
+						<a href="<?php echo get_permalink(wc_get_page_id('shop')); ?>?thuong-hieu[]=<?php echo $brands[0]->term_id; ?>" class="btn btn-lg py-1 px-5 fw-bold btn-primary rounded">Xem thêm sản phẩm</a>
 					</div>
 				<?php endif; ?>
 			</div>

@@ -598,7 +598,7 @@ function site_wc_product_query( $query )
     $tax_query = array();
 
     // $brand = site__get( 'brand', '' );
-    $brands = site__get( 'brands', array() );
+    $brands = site__get( 'thuong-hieu', array() );
     if( is_array($brands) && count($brands) )
     {
         $tax_query[] = array(
@@ -608,7 +608,7 @@ function site_wc_product_query( $query )
         );
     }
 
-    $cats = site__get( 'cats', array() );
+    $cats = site__get( 'danh-muc', array() );
     if( is_array($cats) && count($cats) )
     {
         $tax_query[] = array(
@@ -627,7 +627,7 @@ function site_wc_product_query( $query )
     }
 
     // $price = site__get( 'price', '' );
-    $prices = site__get( 'prices', array() );
+    $prices = site__get( 'khoang-gia', array() );
     if( is_array($prices) && count($prices) )
     {
         $price_meta = array( 'relation' => 'OR' );

@@ -1829,6 +1829,13 @@ window.addEventListener("load", function() {
                 }
             }, 1500);
         });
+
+        let currentUrl = window.location.href;
+        let newUrl = currentUrl.replace(/%5B/g, '[').replace(/%5D/g, ']');
+
+        if (newUrl !== currentUrl) {
+            window.history.replaceState(null, '', newUrl);
+        }
     });
 
     $('body').on('click', '.dgwt-wcas-search-input', function(e) {
