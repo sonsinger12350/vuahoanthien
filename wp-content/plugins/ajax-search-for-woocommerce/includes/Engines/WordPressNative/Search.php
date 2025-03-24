@@ -375,7 +375,19 @@ class Search {
             }
             // Get price
             if ( in_array( 'price', $fields, true ) ) {
-                $r['price'] = $product->getPriceHTML();
+                $wp_product = wc_get_product($post->ID);
+
+                $regular_price = $wp_product->get_regular_price();
+                $sale_price = $wp_product->get_sale_price();
+
+                if ( '' === $wp_product->get_price() ) 
+                    $price = apply_filters( 'woocommerce_empty_price_html', '', $wp_product );
+                elseif ( $wp_product->is_on_sale() ) 
+                    $price = wc_format_sale_price( wc_get_price_to_display( $wp_product, ['price' => $regular_price] ), $sale_price ) . $wp_product->get_price_suffix();
+                else 
+                    $price = wc_price( wc_get_price_to_display( $wp_product ) ) . $wp_product->get_price_suffix();
+
+                $r['price'] = $price;
             }
             // Get description
             if ( DGWT_WCAS()->settings->getOption( 'show_product_desc' ) === 'on' ) {
