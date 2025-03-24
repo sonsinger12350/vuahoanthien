@@ -17,7 +17,7 @@
 
 get_header();
 
-$order_id = site__get('order_id', '');
+$order_id = site__get('ma-don-hang', '');
 $order = false;
 $status_name = '';
 
@@ -58,7 +58,7 @@ if ($order_id != '') {
 					<div class="input-group search-box mb-3">
 						<input type="text" class="form-control search-input"
 							placeholder="Nhập mã đơn hàng" aria-label="Search"
-							aria-describedby="button-addon2" name="order_id" value="<?php echo $order_id; ?>" required>
+							aria-describedby="button-addon2" name="ma-don-hang" value="<?php echo $order_id; ?>" required>
 						<button class="btn btn-search" type="submit"><i class="bi bi-search"></i></button>
 					</div>
 				</form>

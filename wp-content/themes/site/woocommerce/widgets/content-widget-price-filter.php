@@ -33,7 +33,7 @@ defined( 'ABSPATH' ) || exit;
 			<div class="price_label" style="display:none;">
 				<?php //echo esc_html__( 'Price:', 'woocommerce' ); &mdash; ?> <span class="from"></span>  <span class="to"></span>
 			</div>
-			<?php echo wc_query_string_form_fields( null, array( 'min_price', 'max_price', 'paged' ), '', true ); ?>
+			<?php echo wc_query_string_form_fields( null, array( 'gia-thap-nhat', 'gia-cao-nhat', 'paged' ), '', true ); ?>
 			<div class="clear"></div>
 		</div>
 	</div>

@@ -15,7 +15,7 @@
  * @since Twenty Twelve 1.0
  */
 
-$ids = explode('-', sanitize_text_field(isset($_GET['ids']) ? $_GET['ids'] : ''));
+$ids = explode('-', sanitize_text_field(isset($_GET['ma-san-pham']) ? $_GET['ma-san-pham'] : ''));
 $error_compare_check = false;
 
 $product_spec_mappings = [

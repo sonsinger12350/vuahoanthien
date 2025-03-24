@@ -663,13 +663,13 @@ class WC_Query {
 		global $wpdb;
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( ! $wp_query->is_main_query() || ( ! isset( $_GET['max_price'] ) && ! isset( $_GET['min_price'] ) ) ) {
+		if ( ! $wp_query->is_main_query() || ( ! isset( $_GET['gia-cao-nhat'] ) && ! isset( $_GET['gia-thap-nhat'] ) ) ) {
 			return $args;
 		}
 
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended
-		$current_min_price = isset( $_GET['min_price'] ) ? floatval( wp_unslash( $_GET['min_price'] ) ) : 0;
-		$current_max_price = isset( $_GET['max_price'] ) ? floatval( wp_unslash( $_GET['max_price'] ) ) : PHP_INT_MAX;
+		$current_min_price = isset( $_GET['gia-thap-nhat'] ) ? floatval( wp_unslash( $_GET['gia-thap-nhat'] ) ) : 0;
+		$current_max_price = isset( $_GET['gia-cao-nhat'] ) ? floatval( wp_unslash( $_GET['gia-cao-nhat'] ) ) : PHP_INT_MAX;
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		/**

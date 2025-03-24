@@ -1027,8 +1027,8 @@ function wc_get_core_supported_themes() {
 function wc_get_min_max_price_meta_query( $args ) {
 	wc_deprecated_function( 'wc_get_min_max_price_meta_query()', '3.6' );
 
-	$current_min_price = isset( $args['min_price'] ) ? floatval( $args['min_price'] ) : 0;
-	$current_max_price = isset( $args['max_price'] ) ? floatval( $args['max_price'] ) : PHP_INT_MAX;
+	$current_min_price = isset( $args['gia-thap-nhat'] ) ? floatval( $args['gia-thap-nhat'] ) : 0;
+	$current_max_price = isset( $args['gia-cao-nhat'] ) ? floatval( $args['gia-cao-nhat'] ) : PHP_INT_MAX;
 
 	return apply_filters(
 		'woocommerce_get_min_max_price_meta_query',
