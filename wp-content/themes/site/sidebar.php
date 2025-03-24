@@ -1,4 +1,7 @@
 <?php
+	global $post;
+	if ($post->post_type == 'post') return false;
+
 	function fetch_term_by_price($level = 0) {
 		$value_prices = site__get('khoang-gia', []);
 
@@ -308,21 +311,19 @@
 			if (isset($_GET['s'])) {
 				global $wp_query;
 
-				$results = $wpdb->get_results($wp_query->request);
-				$product_ids = [];
+				$query = str_replace('SQL_CALC_FOUND_ROWS DISTINCT vhd_posts.ID', 'GROUP_CONCAT(DISTINCT vhd_posts.ID)', $wp_query->request);
+				$query = str_replace('LIMIT 0, 24', ' ', $query);
+				$query = str_replace('GROUP BY vhd_posts.ID', ' ', $query);
+				$product_ids = $wpdb->get_var($query);
 
-				if (empty($results)) return [];
-
-				foreach ($results as $v) {
-					$product_ids[] = $v->ID;
-				}
+				if (empty($product_ids)) return [];
 
 				$sql = "SELECT DISTINCT vhd_terms.term_id, vhd_term_taxonomy.taxonomy, vhd_terms.name
 					FROM vhd_term_taxonomy
 					JOIN vhd_terms ON (vhd_term_taxonomy.term_id = vhd_terms.term_id)
 					JOIN vhd_term_relationships ON (vhd_terms.term_id = vhd_term_relationships.term_taxonomy_id)
 					WHERE vhd_term_taxonomy.taxonomy = 'product-brand' 
-					AND object_id IN (".implode(',', $product_ids).")
+					AND object_id IN ($product_ids)
 				";
 				return $wpdb->get_results($sql);
 				// return site_the_category_brands($categories);
@@ -353,39 +354,22 @@
 	}
 
 	function fetch_terms_by_keywords() {
-		// global $wpdb;
-		// $keyword = $_GET['s'];
-		// $sql = "SELECT GROUP_CONCAT(DISTINCT vhd_posts.ID)
-		// 	FROM vhd_posts
-		// 	LEFT JOIN vhd_postmeta ON (vhd_posts.ID = vhd_postmeta.post_id)
-		// 	INNER JOIN vhd_term_relationships ON (vhd_posts.ID = vhd_term_relationships.object_id )
-		// 	WHERE vhd_posts.post_type = 'product' 
-		// 	AND vhd_posts.post_status = 'publish'
-		// 	AND vhd_postmeta.meta_key = '_sale_price' 
-		// 	AND CAST(vhd_postmeta.meta_value AS SIGNED) > 0 AND 
-		// 	(vhd_posts.post_content LIKE '%$keyword%' OR vhd_posts.post_title LIKE '%$keyword%')
-		// ";
-		// $product_ids = $wpdb->get_var($sql);
-
 		global $wp_query, $wpdb;
 
-		$results = $wpdb->get_results($wp_query->request);
-		$product_ids = [];
+		$query = str_replace('SQL_CALC_FOUND_ROWS DISTINCT vhd_posts.ID', 'GROUP_CONCAT(DISTINCT vhd_posts.ID)', $wp_query->request);
+		$query = str_replace('LIMIT 0, 24', ' ', $query);
+		$query = str_replace('GROUP BY vhd_posts.ID', ' ', $query);
 
-		if (empty($results)) return [];
+		$product_ids = $wpdb->get_var($query);
 
-		foreach ($results as $v) {
-			$product_ids[] = $v->ID;
-		}
-
-		$product_ids = implode(',', $product_ids);
-		
 		if (empty($product_ids)) return [];
+
 		$sql = "SELECT GROUP_CONCAT(DISTINCT vhd_term_taxonomy.term_id)
 			FROM vhd_term_taxonomy
 			JOIN vhd_term_relationships ON (vhd_term_taxonomy.term_taxonomy_id = vhd_term_relationships.term_taxonomy_id )
 			WHERE vhd_term_relationships.object_id  IN ($product_ids) AND vhd_term_taxonomy.taxonomy = 'product_cat'
 		";
+
 		$allCategories = $wpdb->get_var($sql);
 		$exclude_ids = [100, 15, 23, 137];
 		$final_cat = array_filter(explode(',', $allCategories), function($value) use ($exclude_ids) {
@@ -455,6 +439,7 @@
 	}
 
 	global $sidebar_choose, $sidebar_true;
+
 	$sidebar_true = true;
 	$sidebar_choose = $sidebar_choose ?? [];
 
@@ -557,12 +542,15 @@
 	<div class="section-bg">
 		<div class="nav-aside bg-light">
 			<form class="sidebar-form" method="get" action="<?php echo htmlspecialchars($action_url); ?>">
+				<?php if (isset($_GET['dgwt_wcas'])): ?>
+					<input type="hidden" name="dgwt_wcas" value="1">
+				<?php endif; ?>
 				<?php if (isset($_GET['s'])): ?>
 					<input type="hidden" name="s" value="<?php echo htmlspecialchars($_GET['s']); ?>">
 					<input type="hidden" name="post_type" value="product">
 					<?php
 						$query_params = $_GET;
-						unset($query_params['thuong-hieu'], $query_params['min_price'], $query_params['max_price']);
+						unset($query_params['thuong-hieu'], $query_params['gia-thap-nhat'], $query_params['gia-cao-nhat']);
 						$action_url = $uri[0] . '?' . http_build_query($query_params) . '&';
 					?>
 				<?php endif; ?>
